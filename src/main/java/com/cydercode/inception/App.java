@@ -4,7 +4,10 @@ import com.cydercode.inception.events.EventListener;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import com.cydercode.inception.model.World;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class App {
 
     public static void main(String[] args) {
@@ -42,5 +45,6 @@ public class App {
         game.tell(adam, "Hello Ann!!");
 
         System.out.println(game.getGameStringRepresentation());
+        SpringApplication.run(App.class, args);
     }
 }

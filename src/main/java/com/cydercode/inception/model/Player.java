@@ -19,6 +19,10 @@ public class Player extends Matter {
         this.nickname = nickname;
     }
 
+    public void receiveMessage(String message) {
+        fireEvent(nickname + " received message: " + message);
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)

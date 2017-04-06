@@ -3,7 +3,11 @@ package com.cydercode.inception.model;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
+import java.util.Random;
+
 public class Location {
+
+    private static final Random random = new Random();
 
     private double x, y, z;
 
@@ -47,5 +51,11 @@ public class Location {
                 .add("y", y)
                 .add("z", z)
                 .toString();
+    }
+
+    public static Location random() {
+        return new Location(random.nextDouble() * 1000,
+                random.nextDouble() * 1000,
+                random.nextDouble() * 1000);
     }
 }

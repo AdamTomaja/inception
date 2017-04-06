@@ -1,4 +1,4 @@
-package com.cydercode.inception;
+package com.cydercode.inception.model;
 
 import java.util.ArrayList;
 import java.util.List;

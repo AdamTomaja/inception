@@ -1,4 +1,4 @@
-package com.cydercode.inception;
+package com.cydercode.inception.model;
 
 public class Matter extends Node {
 

@@ -26,6 +26,6 @@ distributed social network.
 * Authorization on world scope
 * Permanent database - at the moment all data is stored in memory
 * Authentication
-* System of story points, paid teleports
+* System of points / money, paid teleports
 
 ![Image of console](screenshots/inception.png)

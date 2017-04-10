@@ -13,8 +13,7 @@ public class MainController {
     private Game game;
 
     @RequestMapping("/")
-    @ResponseBody
     public String home() {
-        return game.getGameStringRepresentation().replace(System.lineSeparator(), "<br>");
+        return "index";
     }
 }

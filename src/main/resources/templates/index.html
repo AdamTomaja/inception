@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html lang="en" ng-app="inceptionGame">
+<head>
+    <meta charset="utf-8"/>
+
+    <title>Inception</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
+
+    <link rel="stylesheet" href="styles.css"/>
+
+    <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+
+    <script src="scrollglue.js"></script>
+
+    <script src="console.js"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Inception game</h1>
+            <div class="panel panel-default" ng-controller="consoleController">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Player console</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 console" scroll-glue="" force-glue="">
+                                <div ng-repeat="consoleItem in consoleItems" class="alert {{consoleItem.style}}" role="alert">{{
+                                    consoleItem.content }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="command-line-input">Command line</label>
+                            <input type="text" class="form-control" id="command-line-input" ng-model="command"
+                                   placeholder="Command..."/>
+                        </div>
+                        <button type="submit" class="btn btn-default" ng-click="execute()" ng-disabled="disconnected">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h1>Help</h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Reference</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>join [nickname]</b> starts the game with desired name</li>
+                        <li class="list-group-item"><b>shout [message]</b> sends message to all players</li>
+                        <li class="list-group-item"><b>tell [message]</b> tells something to players near you</li>
+                        <li class="list-group-item"><b>look</b> displays items near the player</li>
+                        <li class="list-group-item"><b>world [name]</b> creates a new world with given name</li>
+                        <li class="list-group-item"><b>tp [node-name]</b> teleport to desired world</li>
+                        <li class="list-group-item"><b>tp [x],[y],[z]</b> teleport to desired location</li>
+                        <li class="list-group-item"><b>distance [node-name]</b> displays distance from given node</li>
+
+                        <li class="list-group-item"><b>where</b> displays the name of world where You are world</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

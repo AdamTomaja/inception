@@ -13,7 +13,7 @@ public class GameConfiguration {
     public Game game() {
         Game game = new Game();
         Player adam = game.createNewPlayer("Adam");
-        World earth = game.createWorld(adam);
+        World earth = game.createWorld(adam, "adamsworld");
         earth.setName("Earth");
         game.teleport(adam, earth);
         return game;

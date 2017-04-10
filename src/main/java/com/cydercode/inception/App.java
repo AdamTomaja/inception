@@ -6,9 +6,11 @@ import com.cydercode.inception.model.Player;
 import com.cydercode.inception.model.World;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class App {
+public class App extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         Game game = new Game();
@@ -28,7 +30,7 @@ public class App {
         Player adam = game.createNewPlayer("Adam");
         adam.getChildren().add(eventListener);
 
-        World adamsWorld = game.createWorld(adam);
+        World adamsWorld = game.createWorld(adam, "Adam-World");
         game.teleport(adam, adamsWorld);
 
         Player ann = game.createNewPlayer("Ann");
@@ -38,7 +40,7 @@ public class App {
         Player mark = game.createNewPlayer("Mark");
         mark.getChildren().add(eventListener);
 
-        World thirdWorld = game.createWorld(adam);
+        World thirdWorld = game.createWorld(adam, "adam-next-world");
         game.teleport(mark, thirdWorld);
 
         game.shout(adam, "Hello World!");
@@ -46,5 +48,10 @@ public class App {
 
         System.out.println(game.getGameStringRepresentation());
         SpringApplication.run(App.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(App.class);
     }
 }

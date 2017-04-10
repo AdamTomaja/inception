@@ -1,5 +1,6 @@
 package com.cydercode.inception.game;
 
+import com.cydercode.inception.model.Named;
 import com.cydercode.inception.model.Node;
 
 import java.util.Optional;
@@ -25,5 +26,15 @@ public class TreeTraverser {
     public void executeForEach(Node tree, Consumer<Node> nodeConsumer) {
         nodeConsumer.accept(tree);
         tree.getChildren().forEach(child -> executeForEach(child, nodeConsumer));
+    }
+
+    public Optional<Node> findWithName(String name, Node tree) {
+        for (Node node : tree.getChildren()) {
+            if (node instanceof Named && ((Named) node).getName().equals(name)) {
+                return Optional.of(node);
+            }
+        }
+
+        return Optional.empty();
     }
 }

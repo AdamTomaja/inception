@@ -2,10 +2,7 @@ package com.cydercode.inception.game;
 
 
 import com.cydercode.inception.io.NodePrinter;
-import com.cydercode.inception.model.Location;
-import com.cydercode.inception.model.Node;
-import com.cydercode.inception.model.Player;
-import com.cydercode.inception.model.World;
+import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
@@ -99,5 +96,11 @@ public class Game extends Node {
         return MoreObjects.toStringHelper(this)
                 .add("Place", "Universe")
                 .toString();
+    }
+
+    public Heritage createHeritage(Player player, String content) {
+        Heritage heritage = new Heritage(content, player.getLocation());
+        treeTraverser.findParent(player, this).get().getChildren().add(heritage);
+        return heritage;
     }
 }

@@ -1,6 +1,7 @@
 package com.cydercode.inception.controller.action;
 
 import com.cydercode.inception.controller.Command;
+import com.cydercode.inception.events.ConsoleEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Matter;
 import com.cydercode.inception.model.Node;
@@ -25,6 +26,6 @@ public class DistanceAction implements PlayerAction {
             throw new RuntimeException("Cannot calculate distance from " + node.get());
         }
 
-        player.fireEvent("Distance: " + player.getLocation().distanceFrom(((Matter) node.get()).getLocation()));
+        player.fireEvent(new ConsoleEvent("Distance: " + player.getLocation().distanceFrom(((Matter) node.get()).getLocation())));
     }
 }

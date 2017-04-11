@@ -1,6 +1,7 @@
 package com.cydercode.inception.controller.action;
 
 import com.cydercode.inception.controller.Command;
+import com.cydercode.inception.events.ConsoleEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Location;
 import com.cydercode.inception.model.Player;
@@ -19,7 +20,7 @@ public class TeleportAction implements PlayerAction {
         Optional<Location> locationOptional = Location.tryParse(targetParameter);
         Object place = null;
 
-        if(locationOptional.isPresent()) {
+        if (locationOptional.isPresent()) {
             Location location = locationOptional.get();
             game.teleport(player, location);
             place = location;
@@ -28,6 +29,6 @@ public class TeleportAction implements PlayerAction {
             place = targetWorld;
         }
 
-        player.fireEvent("Teleported You to " + place);
+        player.fireEvent(new ConsoleEvent("Teleported You to " + place));
     }
 }

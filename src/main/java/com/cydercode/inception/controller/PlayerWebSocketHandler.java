@@ -1,9 +1,11 @@
 package com.cydercode.inception.controller;
 
 
+import com.cydercode.inception.events.ConsoleEvent;
 import com.cydercode.inception.events.EventListener;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +31,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
 
     @Autowired
     private Game game;
-    
+
     @Autowired
     private CommandExecutor commandExecutor;
 
@@ -55,7 +58,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
                         @Override
                         public void onEvent(Object event) {
                             try {
-                                session.sendMessage(new TextMessage("Event received: " + event));
+                                sendEvent(session, event);
                             } catch (Exception e) {
                                 LOGGER.error("Error while sending to client", e);
                             }
@@ -73,11 +76,15 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
                     break;
             }
         } catch (Exception e) {
-            session.sendMessage(new TextMessage("Error: " + e.getMessage()));
+            sendEvent(session, new ConsoleEvent("Error: " + e.getMessage()));
             LOGGER.error("Error when handling message", e);
         }
 
         super.handleTextMessage(session, message);
+    }
+
+    private void sendEvent(WebSocketSession session, Object event) throws IOException {
+        session.sendMessage(new TextMessage(new Gson().toJson(event)));
     }
 
     private Player getMandatoryPlayer(WebSocketSession session) {

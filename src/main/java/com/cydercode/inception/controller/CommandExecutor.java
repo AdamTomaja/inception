@@ -2,6 +2,7 @@ package com.cydercode.inception.controller;
 
 import com.cydercode.inception.controller.action.ActionName;
 import com.cydercode.inception.controller.action.PlayerAction;
+import com.cydercode.inception.events.ConsoleEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class CommandExecutor {
         if (action.isPresent()) {
             action.get().execute(player, game, command);
         } else {
-            player.fireEvent(format("Command %s not found", command.getAction()));
+            player.fireEvent(new ConsoleEvent(format("Command %s not found", command.getAction())));
         }
     }
 

@@ -26,15 +26,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 
     <script src="scrollglue.js"></script>
-
     <script src="console.js"></script>
+    <script src="babylon.custom.js"></script>
 </head>
 
 <body>
 <div class="container-fluid">
     <div class="row">
+        <h1>Inception game</h1>
         <div class="col-md-6">
-            <h1>Inception game</h1>
+            <canvas id="render-canvas"></canvas>
+        </div>
+        <div class="col-md-3">
             <div class="panel panel-default" ng-controller="consoleController">
                 <div class="panel-heading">
                     <h3 class="panel-title">Player console</h3>
@@ -61,7 +64,6 @@
             </div>
         </div>
         <div class="col-md-3">
-            <h1>Help</h1>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Reference</h3>

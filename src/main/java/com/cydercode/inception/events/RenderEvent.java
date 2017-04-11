@@ -1,23 +1,19 @@
 package com.cydercode.inception.events;
 
-import com.cydercode.inception.model.Node;
-import com.cydercode.inception.model.World;
-
-
 public class RenderEvent extends Event {
 
-    private Node world;
+    private Scene scene;
 
-    public RenderEvent(Node world) {
+    public RenderEvent(Scene scene) {
         super("renderEvent");
-        this.world = world;
+        this.scene = scene;
     }
 
-    public Node getWorld() {
-        return world;
+    public Scene getScene() {
+        return scene;
     }
 
-    public void setWorld(Node world) {
-        this.world = world;
+    public void setWorld(Scene scene) {
+        this.scene = scene;
     }
 }

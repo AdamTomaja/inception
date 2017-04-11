@@ -2,13 +2,12 @@ package com.cydercode.inception.game;
 
 
 import com.cydercode.inception.events.RenderEvent;
+import com.cydercode.inception.events.Scene;
 import com.cydercode.inception.io.NodePrinter;
 import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Game extends Node {
 
@@ -30,8 +29,26 @@ public class Game extends Node {
     }
 
     public RenderEvent createRenderFor(Player player) {
-        Node world = treeTraverser.findParent(player, this).get();
-        return new RenderEvent(world);
+        Scene scene = new Scene();
+        List<Object> children = new ArrayList<>();
+        Node parent = treeTraverser.findParent(player, this).get();
+        for (Node child : parent.getChildren()) {
+            Map<String, Object> childRepresentation = new HashMap<>();
+            childRepresentation.put("type", child.getClass().getSimpleName());
+
+            if (child instanceof Matter) {
+                childRepresentation.put("location", ((Matter) child).getLocation());
+            }
+
+            if(child instanceof Named) {
+                childRepresentation.put("name", ((Named) child).getName());
+            }
+
+            children.add(childRepresentation);
+        }
+
+        scene.put("children", children);
+        return new RenderEvent(scene);
     }
 
     public Optional<Node> getNodeWithName(Player player, String nodeName) {

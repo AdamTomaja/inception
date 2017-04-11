@@ -38,8 +38,8 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         LOGGER.info("Connection estabilished: {}", session);
-        session.sendMessage(new TextMessage("Hi! Type 'help' to get available commands."));
-        session.sendMessage(new TextMessage("Type 'join <nickname>' to start the game"));
+        sendEvent(session, new ConsoleEvent("Hi! Type 'help' to get available commands."));
+        sendEvent(session, new ConsoleEvent("Type 'join <nickname>' to start the game"));
         super.afterConnectionEstablished(session);
     }
 
@@ -66,6 +66,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
                     });
 
                     player.receiveMessage("Hello " + player.getNickname());
+                    player.fireEvent(game.createRenderFor(player));
                     break;
                 case "help":
                     session.sendMessage(new TextMessage("join <nickname>, shout <message>"));

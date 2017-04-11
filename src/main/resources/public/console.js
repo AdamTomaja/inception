@@ -31,6 +31,7 @@ myApp.controller('consoleController', function($scope) {
     }
 
     socket.onmessage = function(ev) {
+        console.log(ev.data);
        var serverEvent = JSON.parse(ev.data);
        addConsoleReceivedItem(serverEvent.content);
        $scope.$apply();

@@ -1,6 +1,7 @@
 package com.cydercode.inception.game;
 
 
+import com.cydercode.inception.events.RenderEvent;
 import com.cydercode.inception.io.NodePrinter;
 import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;
@@ -26,6 +27,11 @@ public class Game extends Node {
         Node playerParent = treeTraverser.findParent(player, this).get();
         playerParent.getChildren().add(world);
         return world;
+    }
+
+    public RenderEvent createRenderFor(Player player) {
+        Node world = treeTraverser.findParent(player, this).get();
+        return new RenderEvent(world);
     }
 
     public Optional<Node> getNodeWithName(Player player, String nodeName) {

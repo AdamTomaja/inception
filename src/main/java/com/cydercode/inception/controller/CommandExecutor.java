@@ -36,6 +36,7 @@ public class CommandExecutor {
         Optional<PlayerAction> action = searchForAction(command.getAction());
         if (action.isPresent()) {
             action.get().execute(player, game, command);
+            player.fireEvent(game.createRenderFor(player));
         } else {
             player.fireEvent(new ConsoleEvent(format("Command %s not found", command.getAction())));
         }

@@ -72,8 +72,8 @@ public class Location {
     }
 
     public static Location random() {
-        return new Location(random.nextDouble() * 1000,
-                random.nextDouble() * 1000,
-                random.nextDouble() * 1000);
+        return new Location(random.nextDouble() * 100,
+                random.nextDouble() * 100,
+                random.nextDouble() * 100);
     }
 }

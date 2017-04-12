@@ -1,8 +1,8 @@
 package com.cydercode.inception.game;
 
 
-import com.cydercode.inception.events.RenderEvent;
-import com.cydercode.inception.events.Scene;
+import com.cydercode.inception.events.server.RenderEvent;
+import com.cydercode.inception.events.server.Scene;
 import com.cydercode.inception.io.NodePrinter;
 import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;

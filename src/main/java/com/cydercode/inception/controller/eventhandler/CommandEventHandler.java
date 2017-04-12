@@ -1,8 +1,8 @@
 package com.cydercode.inception.controller.eventhandler;
 
 import com.cydercode.inception.controller.*;
-import com.cydercode.inception.events.CommandEvent;
-import com.cydercode.inception.events.ConsoleEvent;
+import com.cydercode.inception.events.client.CommandEvent;
+import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.EventListener;
 import com.cydercode.inception.game.Game;

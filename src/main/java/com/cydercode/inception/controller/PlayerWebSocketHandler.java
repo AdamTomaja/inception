@@ -3,8 +3,9 @@ package com.cydercode.inception.controller;
 
 import com.cydercode.inception.controller.eventhandler.EventHandler;
 import com.cydercode.inception.controller.eventhandler.EventType;
-import com.cydercode.inception.events.ConsoleEvent;
 import com.cydercode.inception.events.Event;
+import com.cydercode.inception.events.client.CommandEvent;
+import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.game.Game;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
     private <T extends Event> T parseEvent(String eventPayload) throws ClassNotFoundException {
         Gson gson = new Gson();
         Event event = gson.fromJson(eventPayload, Event.class);
-        Class eventType = Class.forName(Event.class.getPackage().getName() + "." + event.getType());
+        Class eventType = Class.forName(CommandEvent.class.getPackage().getName() + "." + event.getType());
         event = gson.fromJson(eventPayload, (Class<Event>) eventType);
         return (T) event;
     }

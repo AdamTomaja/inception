@@ -1,6 +1,6 @@
 package com.cydercode.inception.model;
 
-import com.cydercode.inception.events.ConsoleEvent;
+import com.cydercode.inception.events.server.ConsoleEvent;
 import com.google.common.base.MoreObjects;
 
 public class Player extends Matter implements Named {

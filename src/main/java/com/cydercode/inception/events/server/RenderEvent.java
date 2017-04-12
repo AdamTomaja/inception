@@ -1,4 +1,6 @@
-package com.cydercode.inception.events;
+package com.cydercode.inception.events.server;
+
+import com.cydercode.inception.events.Event;
 
 public class RenderEvent extends Event {
 

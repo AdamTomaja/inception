@@ -1,4 +1,4 @@
-package com.cydercode.inception.events;
+package com.cydercode.inception.events.server;
 
 import java.util.HashMap;
 

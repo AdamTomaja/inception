@@ -1,5 +1,6 @@
-package com.cydercode.inception.events;
+package com.cydercode.inception.events.client;
 
+import com.cydercode.inception.events.Event;
 import com.cydercode.inception.model.Location;
 
 public class PlayerPositionEvent extends Event {

@@ -2,7 +2,7 @@ package com.cydercode.inception.controller;
 
 import com.cydercode.inception.controller.action.ActionName;
 import com.cydercode.inception.controller.action.PlayerAction;
-import com.cydercode.inception.events.ConsoleEvent;
+import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import org.slf4j.Logger;

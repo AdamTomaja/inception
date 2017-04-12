@@ -1,6 +1,7 @@
 package com.cydercode.inception.game;
 
 
+import com.cydercode.inception.events.server.PlayerPositionChangedEvent;
 import com.cydercode.inception.events.server.RenderEvent;
 import com.cydercode.inception.events.server.Scene;
 import com.cydercode.inception.io.NodePrinter;
@@ -39,7 +40,7 @@ public class Game extends Node {
                 childRepresentation.put("location", ((Matter) child).getLocation());
             }
 
-            if(child instanceof Named) {
+            if (child instanceof Named) {
                 childRepresentation.put("name", ((Named) child).getName());
             }
 
@@ -55,6 +56,12 @@ public class Game extends Node {
     }
 
     public void teleport(Player player, Location location) {
+        Node parent = treeTraverser.findParent(player, this).get();
+        for(Node child : parent.getChildren()) {
+            if(child != player) {
+                child.fireEvent(new PlayerPositionChangedEvent(player, location));
+            }
+        }
         player.setLocation(location);
     }
 

@@ -1,6 +1,6 @@
 myApp.service("renderService", function () {
 
-    var models = [];
+    var models = {};
     var canvas = document.getElementById("render-canvas");
     var engine = new BABYLON.Engine(canvas, true);
 
@@ -36,11 +36,12 @@ myApp.service("renderService", function () {
     var materialMapping = {"World": worldMaterial, "Player": playerMaterial};
 
     this.renderScene = function (sceneData) {
+        models = {};
         console.log("Rendering", scene);
 
-        models.forEach(function (model) {
-            model.dispose();
-        });
+        for (var nodeid in models) {
+            models[nodeid].dispose();
+        }
 
         sceneData.children.forEach(function (entry) {
             console.log(entry);
@@ -49,7 +50,7 @@ myApp.service("renderService", function () {
             sphere.position.y = entry.location.y
             sphere.position.z = entry.location.z;
             sphere.material = materialMapping[entry.type];
-            models.push(sphere);
+            models[entry.name] = sphere;
 
 
             var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
@@ -67,13 +68,19 @@ myApp.service("renderService", function () {
             plane.position.y = sphere.position.y + 3;
             plane.position.z = sphere.position.z;
 
-            models.push(plane);
+            models[entry.name + "_plane"] = plane;
 
         });
     }
 
     this.getCameraPosition = function () {
         return camera.position;
+    }
+
+    this.updateNodePosition = function (nodeid, position) {
+        models[nodeid].position.x = position.x;
+        models[nodeid].position.y = position.y;
+        models[nodeid].position.z = position.z;
     }
 
     engine.runRenderLoop(function () {

@@ -1,5 +1,3 @@
-
-
 myApp.controller('consoleController', function($scope, renderService, websocketService) {
     $scope.consoleItems = [];
     $scope.models = [];

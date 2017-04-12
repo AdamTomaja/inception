@@ -4,12 +4,17 @@ myApp.service("renderService", function () {
     var canvas = document.getElementById("render-canvas");
     var engine = new BABYLON.Engine(canvas, true);
 
-    var createScene = function() {
+    var createScene = function () {
         // create a basic BJS Scene object
         var scene = new BABYLON.Scene(engine);
 
         // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
-        var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-50), scene);
+        var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 1, -15), scene);
+
+        camera.keysUp.push(87); // "w"
+        camera.keysDown.push(83); // "s"
+        camera.keysUp.push(65); // "w"
+        camera.keysDown.push(68); // "s"
 
         // target the camera to scene origin
         camera.setTarget(BABYLON.Vector3.Zero());
@@ -17,8 +22,10 @@ myApp.service("renderService", function () {
         // attach the camera to the canvas
         camera.attachControl(canvas, false);
 
+        camera.inputs.add(new WSADCameraKeyboardInput());
+
         // create a basic light, aiming 0,1,0 - meaning, to the sky
-        var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
+        var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
 
         // return the created scene
         return scene;
@@ -34,16 +41,16 @@ myApp.service("renderService", function () {
 
     var materialMapping = {"World": worldMaterial, "Player": playerMaterial};
 
-    this.renderScene = function(sceneData) {
+    this.renderScene = function (sceneData) {
         console.log("Rendering", scene);
 
-        models.forEach(function(model){
+        models.forEach(function (model) {
             model.dispose();
         });
 
-        sceneData.children.forEach(function(entry){
+        sceneData.children.forEach(function (entry) {
             console.log(entry);
-            var sphere = BABYLON.Mesh.CreateSphere('sphere1'+ entry.name, 16, 2, scene);
+            var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.name, 16, 2, scene);
             sphere.position.x = entry.location.x
             sphere.position.y = entry.location.y
             sphere.position.z = entry.location.z;
@@ -64,18 +71,18 @@ myApp.service("renderService", function () {
 
             plane.position.x = sphere.position.x;
             plane.position.y = sphere.position.y + 3;
-            plane.position.z =  sphere.position.z;
+            plane.position.z = sphere.position.z;
 
             models.push(plane);
 
         });
     }
 
-    engine.runRenderLoop(function() {
+    engine.runRenderLoop(function () {
         scene.render();
     });
 
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         engine.resize();
     });
 

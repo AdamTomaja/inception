@@ -13998,8 +13998,8 @@ var BABYLON;
             this._keys = [];
             this.keysUp = [38];
             this.keysDown = [40];
-            this.keysLeft = [37];
-            this.keysRight = [39];
+            this.keysUp = [37];
+            this.keysDown = [39];
         }
         FreeCameraKeyboardMoveInput.prototype.attachControl = function (element, noPreventDefault) {
             var _this = this;
@@ -14008,8 +14008,8 @@ var BABYLON;
                 this._onKeyDown = function (evt) {
                     if (_this.keysUp.indexOf(evt.keyCode) !== -1 ||
                         _this.keysDown.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysRight.indexOf(evt.keyCode) !== -1) {
+                        _this.keysUp.indexOf(evt.keyCode) !== -1 ||
+                        _this.keysDown.indexOf(evt.keyCode) !== -1) {
                         var index = _this._keys.indexOf(evt.keyCode);
                         if (index === -1) {
                             _this._keys.push(evt.keyCode);
@@ -14022,8 +14022,8 @@ var BABYLON;
                 this._onKeyUp = function (evt) {
                     if (_this.keysUp.indexOf(evt.keyCode) !== -1 ||
                         _this.keysDown.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                        _this.keysRight.indexOf(evt.keyCode) !== -1) {
+                        _this.keysUp.indexOf(evt.keyCode) !== -1 ||
+                        _this.keysDown.indexOf(evt.keyCode) !== -1) {
                         var index = _this._keys.indexOf(evt.keyCode);
                         if (index >= 0) {
                             _this._keys.splice(index, 1);
@@ -14059,13 +14059,13 @@ var BABYLON;
                 for (var index = 0; index < this._keys.length; index++) {
                     var keyCode = this._keys[index];
                     var speed = camera._computeLocalCameraSpeed();
-                    if (this.keysLeft.indexOf(keyCode) !== -1) {
+                    if (this.keysUp.indexOf(keyCode) !== -1) {
                         camera._localDirection.copyFromFloats(-speed, 0, 0);
                     }
                     else if (this.keysUp.indexOf(keyCode) !== -1) {
                         camera._localDirection.copyFromFloats(0, 0, speed);
                     }
-                    else if (this.keysRight.indexOf(keyCode) !== -1) {
+                    else if (this.keysDown.indexOf(keyCode) !== -1) {
                         camera._localDirection.copyFromFloats(speed, 0, 0);
                     }
                     else if (this.keysDown.indexOf(keyCode) !== -1) {
@@ -14097,10 +14097,10 @@ var BABYLON;
         ], FreeCameraKeyboardMoveInput.prototype, "keysDown", void 0);
         __decorate([
             BABYLON.serialize()
-        ], FreeCameraKeyboardMoveInput.prototype, "keysLeft", void 0);
+        ], FreeCameraKeyboardMoveInput.prototype, "keysUp", void 0);
         __decorate([
             BABYLON.serialize()
-        ], FreeCameraKeyboardMoveInput.prototype, "keysRight", void 0);
+        ], FreeCameraKeyboardMoveInput.prototype, "keysDown", void 0);
         return FreeCameraKeyboardMoveInput;
     }());
     BABYLON.FreeCameraKeyboardMoveInput = FreeCameraKeyboardMoveInput;
@@ -14373,8 +14373,8 @@ var BABYLON;
             this._keys = [];
             this.keysUp = [38];
             this.keysDown = [40];
-            this.keysLeft = [37];
-            this.keysRight = [39];
+            this.keysUp = [37];
+            this.keysDown = [39];
         }
         ArcRotateCameraKeyboardMoveInput.prototype.attachControl = function (element, noPreventDefault) {
             var _this = this;
@@ -14382,8 +14382,8 @@ var BABYLON;
             this._onKeyDown = function (evt) {
                 if (_this.keysUp.indexOf(evt.keyCode) !== -1 ||
                     _this.keysDown.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysRight.indexOf(evt.keyCode) !== -1) {
+                    _this.keysUp.indexOf(evt.keyCode) !== -1 ||
+                    _this.keysDown.indexOf(evt.keyCode) !== -1) {
                     var index = _this._keys.indexOf(evt.keyCode);
                     if (index === -1) {
                         _this._keys.push(evt.keyCode);
@@ -14398,8 +14398,8 @@ var BABYLON;
             this._onKeyUp = function (evt) {
                 if (_this.keysUp.indexOf(evt.keyCode) !== -1 ||
                     _this.keysDown.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysLeft.indexOf(evt.keyCode) !== -1 ||
-                    _this.keysRight.indexOf(evt.keyCode) !== -1) {
+                    _this.keysUp.indexOf(evt.keyCode) !== -1 ||
+                    _this.keysDown.indexOf(evt.keyCode) !== -1) {
                     var index = _this._keys.indexOf(evt.keyCode);
                     if (index >= 0) {
                         _this._keys.splice(index, 1);
@@ -14438,13 +14438,13 @@ var BABYLON;
                 var camera = this.camera;
                 for (var index = 0; index < this._keys.length; index++) {
                     var keyCode = this._keys[index];
-                    if (this.keysLeft.indexOf(keyCode) !== -1) {
+                    if (this.keysUp.indexOf(keyCode) !== -1) {
                         camera.inertialAlphaOffset -= 0.01;
                     }
                     else if (this.keysUp.indexOf(keyCode) !== -1) {
                         camera.inertialBetaOffset -= 0.01;
                     }
-                    else if (this.keysRight.indexOf(keyCode) !== -1) {
+                    else if (this.keysDown.indexOf(keyCode) !== -1) {
                         camera.inertialAlphaOffset += 0.01;
                     }
                     else if (this.keysDown.indexOf(keyCode) !== -1) {
@@ -14467,10 +14467,10 @@ var BABYLON;
         ], ArcRotateCameraKeyboardMoveInput.prototype, "keysDown", void 0);
         __decorate([
             BABYLON.serialize()
-        ], ArcRotateCameraKeyboardMoveInput.prototype, "keysLeft", void 0);
+        ], ArcRotateCameraKeyboardMoveInput.prototype, "keysUp", void 0);
         __decorate([
             BABYLON.serialize()
-        ], ArcRotateCameraKeyboardMoveInput.prototype, "keysRight", void 0);
+        ], ArcRotateCameraKeyboardMoveInput.prototype, "keysDown", void 0);
         return ArcRotateCameraKeyboardMoveInput;
     }());
     BABYLON.ArcRotateCameraKeyboardMoveInput = ArcRotateCameraKeyboardMoveInput;
@@ -15235,12 +15235,12 @@ var BABYLON;
             get: function () {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    return keyboard.keysLeft;
+                    return keyboard.keysUp;
             },
             set: function (value) {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    keyboard.keysLeft = value;
+                    keyboard.keysUp = value;
             },
             enumerable: true,
             configurable: true
@@ -15249,12 +15249,12 @@ var BABYLON;
             get: function () {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    return keyboard.keysRight;
+                    return keyboard.keysDown;
             },
             set: function (value) {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    keyboard.keysRight = value;
+                    keyboard.keysDown = value;
             },
             enumerable: true,
             configurable: true
@@ -15729,12 +15729,12 @@ var BABYLON;
             get: function () {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    return keyboard.keysLeft;
+                    return keyboard.keysUp;
             },
             set: function (value) {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    keyboard.keysLeft = value;
+                    keyboard.keysUp = value;
             },
             enumerable: true,
             configurable: true
@@ -15743,12 +15743,12 @@ var BABYLON;
             get: function () {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    return keyboard.keysRight;
+                    return keyboard.keysDown;
             },
             set: function (value) {
                 var keyboard = this.inputs.attached["keyboard"];
                 if (keyboard)
-                    keyboard.keysRight = value;
+                    keyboard.keysDown = value;
             },
             enumerable: true,
             configurable: true

@@ -2,7 +2,7 @@ var WSADCameraKeyboardInput = function () {
     this._keys = [];
     this.keysUp = [32];
     this.keysDown = [17];
-    this.sensibility = 2;
+    this.sensibility = 1;
 }
 
 WSADCameraKeyboardInput.prototype.attachControl = function (element, noPreventDefault) {

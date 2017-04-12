@@ -1,5 +1,6 @@
 package com.cydercode.inception.model;
 
+import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.EventListener;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class Node {
         this.children = children;
     }
 
-    public void fireEvent(Object event) {
+    public void fireEvent(Event event) {
         for (Node child : children) {
             if (child instanceof EventListener) {
                 ((EventListener) child).onEvent(event);

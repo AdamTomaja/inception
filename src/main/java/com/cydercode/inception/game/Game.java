@@ -17,7 +17,6 @@ public class Game extends Node {
     public Player createNewPlayer(String name) {
         Player player = new Player(Location.random(), name);
         getChildren().add(player);
-        fireEvent("Player created: " + name);
         return player;
     }
 

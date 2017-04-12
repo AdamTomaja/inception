@@ -27,4 +27,12 @@ public class SessionsCache {
     public void addPlayer(WebSocketSession session, Player player) {
         sessionPlayerMap.put(session, player);
     }
+
+    public Player getMandatoryPlayer(WebSocketSession session) {
+        if (!sessionPlayerMap.containsKey(session)) {
+            throw new RuntimeException("This session has not player assigned!");
+        }
+
+        return sessionPlayerMap.get(session);
+    }
 }

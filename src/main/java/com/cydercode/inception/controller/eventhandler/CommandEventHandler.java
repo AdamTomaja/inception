@@ -1,10 +1,11 @@
 package com.cydercode.inception.controller.eventhandler;
 
 import com.cydercode.inception.controller.*;
-import com.cydercode.inception.events.client.CommandEvent;
-import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.EventListener;
+import com.cydercode.inception.events.client.CommandEvent;
+import com.cydercode.inception.events.server.ConsoleEvent;
+import com.cydercode.inception.events.server.JoinEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ public class CommandEventHandler implements EventHandler<CommandEvent> {
                 });
 
                 player.receiveMessage("Hello " + player.getNickname());
+                player.fireEvent(new JoinEvent());
                 player.fireEvent(game.createRenderFor(player));
                 break;
             case "help":

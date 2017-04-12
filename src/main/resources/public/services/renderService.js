@@ -3,8 +3,6 @@ myApp.service("renderService", function () {
     var models = [];
     var canvas = document.getElementById("render-canvas");
     var engine = new BABYLON.Engine(canvas, true);
-    var cameraPositionListeners = [];
-
 
     // create a basic BJS Scene object
     var scene = new BABYLON.Scene(engine);
@@ -24,12 +22,6 @@ myApp.service("renderService", function () {
     camera.attachControl(canvas, false);
 
     camera.inputs.add(new WSADCameraKeyboardInput());
-
-    setInterval(function () {
-        cameraPositionListeners.forEach(function (listener) {
-            listener(camera.position);
-        });
-    }, 1000);
 
     // create a basic light, aiming 0,1,0 - meaning, to the sky
     var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);

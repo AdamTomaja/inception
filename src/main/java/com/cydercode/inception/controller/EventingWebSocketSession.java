@@ -8,9 +8,6 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 
-/**
- * Created by mint on 13.04.17.
- */
 public class EventingWebSocketSession {
 
     private final WebSocketSession session;

@@ -5,15 +5,15 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
 
     var intervalId;
 
-    var cameraPositionListener = function (cameraPosition) {
+    var cameraPositionListener = function () {
+        var cameraPosition = renderService.getCameraPosition();
         console.log("Camera position", cameraPosition);
-        websocketService.send(JSON.stringify(cameraPosition));
+        websocketService.sendEvent({"type": "PlayerPositionEvent", "location": cameraPosition});
     };
 
     websocketService.addOnOpenListener(function () {
         addConsoleReceivedItem("Connected!");
         $scope.disconnected = false;
-        // intervalId = setInterval(cameraPositionListener, 1000);
     });
 
     websocketService.addOnCloseListener(function (ev) {
@@ -33,6 +33,10 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
                 break;
             case "renderEvent":
                 renderService.renderScene(serverEvent.scene);
+                break;
+            case "joinEvent":
+                console.log("Joined to game!");
+                intervalId = setInterval(cameraPositionListener, 1000);
                 break;
         }
         $scope.$apply();

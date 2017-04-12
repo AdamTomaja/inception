@@ -3,35 +3,37 @@ myApp.service("renderService", function () {
     var models = [];
     var canvas = document.getElementById("render-canvas");
     var engine = new BABYLON.Engine(canvas, true);
+    var cameraPositionListeners = [];
 
-    var createScene = function () {
-        // create a basic BJS Scene object
-        var scene = new BABYLON.Scene(engine);
 
-        // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
-        var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 1, -15), scene);
+    // create a basic BJS Scene object
+    var scene = new BABYLON.Scene(engine);
 
-        camera.keysUp.push(87); // "w"
-        camera.keysDown.push(83); // "s"
-        camera.keysLeft.push(65); // "a"
-        camera.keysRight.push(68); // "d"
+    // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
+    var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 1, -15), scene);
 
-        // target the camera to scene origin
-        camera.setTarget(BABYLON.Vector3.Zero());
+    camera.keysUp.push(87); // "w"
+    camera.keysDown.push(83); // "s"
+    camera.keysLeft.push(65); // "a"
+    camera.keysRight.push(68); // "d"
 
-        // attach the camera to the canvas
-        camera.attachControl(canvas, false);
+    // target the camera to scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
 
-        camera.inputs.add(new WSADCameraKeyboardInput());
+    // attach the camera to the canvas
+    camera.attachControl(canvas, false);
 
-        // create a basic light, aiming 0,1,0 - meaning, to the sky
-        var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+    camera.inputs.add(new WSADCameraKeyboardInput());
 
-        // return the created scene
-        return scene;
-    }
+    setInterval(function () {
+        cameraPositionListeners.forEach(function (listener) {
+            listener(camera.position);
+        });
+    }, 1000);
 
-    var scene = createScene();
+    // create a basic light, aiming 0,1,0 - meaning, to the sky
+    var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+
 
     var playerMaterial = new BABYLON.StandardMaterial("playerMaterial", scene);
     playerMaterial.diffuseColor = new BABYLON.Color3(1, 0.2, 0.7);
@@ -76,6 +78,10 @@ myApp.service("renderService", function () {
             models.push(plane);
 
         });
+    }
+
+    this.getCameraPosition = function () {
+        return camera.position;
     }
 
     engine.runRenderLoop(function () {

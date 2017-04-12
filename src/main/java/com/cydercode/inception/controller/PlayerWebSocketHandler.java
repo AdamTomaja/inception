@@ -1,7 +1,9 @@
 package com.cydercode.inception.controller;
 
 
+import com.cydercode.inception.events.CommandEvent;
 import com.cydercode.inception.events.ConsoleEvent;
+import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.EventListener;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
@@ -45,36 +47,11 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        LOGGER.info("Message received: {}", message);
         try {
-            Command command = commandParser.parse(message.getPayload());
-            LOGGER.info("Parsed command: {}", command);
-            switch (command.getAction()) {
-                case "join":
-                    Player player = game.createNewPlayer(command.getParameters().get(0));
-                    sessionPlayerMap.put(session, player);
-
-                    player.getChildren().add(new EventListener() {
-                        @Override
-                        public void onEvent(Object event) {
-                            try {
-                                sendEvent(session, event);
-                            } catch (Exception e) {
-                                LOGGER.error("Error while sending to client", e);
-                            }
-                        }
-                    });
-
-                    player.receiveMessage("Hello " + player.getNickname());
-                    player.fireEvent(game.createRenderFor(player));
-                    break;
-                case "help":
-                    session.sendMessage(new TextMessage("join <nickname>, shout <message>"));
-                    break;
-
-                default:
-                    commandExecutor.execute(getMandatoryPlayer(session), command);
-                    break;
+            Event event = parseEvent(message.getPayload());
+            LOGGER.info("Event received: {}", event);
+            if (event instanceof CommandEvent) {
+                executeCommandEvent((CommandEvent) event, session);
             }
         } catch (Exception e) {
             sendEvent(session, new ConsoleEvent("Error: " + e.getMessage()));
@@ -82,6 +59,46 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
         }
 
         super.handleTextMessage(session, message);
+    }
+
+    private void executeCommandEvent(CommandEvent event, WebSocketSession session) throws IOException {
+        Command command = commandParser.parse(event.getCommand());
+        LOGGER.info("Parsed command: {}", command);
+        switch (command.getAction()) {
+            case "join":
+                Player player = game.createNewPlayer(command.getParameters().get(0));
+                sessionPlayerMap.put(session, player);
+
+                player.getChildren().add(new EventListener() {
+                    @Override
+                    public void onEvent(Object event) {
+                        try {
+                            sendEvent(session, event);
+                        } catch (Exception e) {
+                            LOGGER.error("Error while sending to client", e);
+                        }
+                    }
+                });
+
+                player.receiveMessage("Hello " + player.getNickname());
+                player.fireEvent(game.createRenderFor(player));
+                break;
+            case "help":
+                session.sendMessage(new TextMessage("join <nickname>, shout <message>"));
+                break;
+
+            default:
+                commandExecutor.execute(getMandatoryPlayer(session), command);
+                break;
+        }
+    }
+
+    private <T extends Event> T parseEvent(String eventPayload) throws ClassNotFoundException {
+        Gson gson = new Gson();
+        Event event = gson.fromJson(eventPayload, Event.class);
+        Class eventType = Class.forName(Event.class.getPackage().getName() + "." + event.getType());
+        event = gson.fromJson(eventPayload, (Class<Event>) eventType);
+        return (T) event;
     }
 
     private void sendEvent(WebSocketSession session, Object event) throws IOException {

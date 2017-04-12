@@ -30,8 +30,8 @@ myApp.service("websocketService", function () {
     socket.onclose = function (ev) {
         console.log("Connection closed!");
         onCloseListeners.forEach(function (listener) {
-            listener();
-        })
+            listener(ev);
+        });
     }
 
     this.addOnMessageListener = function (listener) {
@@ -46,7 +46,11 @@ myApp.service("websocketService", function () {
         onCloseListeners.push(listener);
     }
 
-    this.send = function(data) {
+    this.send = function (data) {
         socket.send(data);
+    }
+
+    this.sendEvent = function (event) {
+        socket.send(JSON.stringify(event));
     }
 });

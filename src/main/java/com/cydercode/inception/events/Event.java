@@ -1,11 +1,12 @@
 package com.cydercode.inception.events;
 
-/**
- * Created by mint on 11.04.17.
- */
 public class Event {
 
-    private String type;
+    protected String type;
+
+    public Event() {
+        //
+    }
 
     public Event(String type) {
         this.type = type;

@@ -1,25 +1,33 @@
-myApp.controller('consoleController', function($scope, renderService, websocketService) {
+myApp.controller('consoleController', function ($scope, renderService, websocketService) {
     $scope.consoleItems = [];
     $scope.models = [];
     $scope.disconnected = true;
 
+    var intervalId;
 
-    websocketService.addOnOpenListener(function() {
+    var cameraPositionListener = function (cameraPosition) {
+        console.log("Camera position", cameraPosition);
+        websocketService.send(JSON.stringify(cameraPosition));
+    };
+
+    websocketService.addOnOpenListener(function () {
         addConsoleReceivedItem("Connected!");
         $scope.disconnected = false;
+        // intervalId = setInterval(cameraPositionListener, 1000);
     });
 
-    websocketService.addOnCloseListener(function(){
+    websocketService.addOnCloseListener(function (ev) {
         console.log("Connection closed!", ev);
         addConsoleReceivedItem("Connection closed!");
         $scope.disconnected = true;
         $scope.$apply();
+        clearInterval(intervalId);
     });
 
-    websocketService.addOnMessageListener(function (data){
+    websocketService.addOnMessageListener(function (data) {
         console.log(data);
         var serverEvent = JSON.parse(data);
-        switch(serverEvent.type) {
+        switch (serverEvent.type) {
             case "consoleEvent":
                 addConsoleReceivedItem(serverEvent.content);
                 break;
@@ -43,8 +51,8 @@ myApp.controller('consoleController', function($scope, renderService, websocketS
     }
 
 
-    $scope.execute = function() {
-        websocketService.send($scope.command);
+    $scope.execute = function () {
+        websocketService.sendEvent({"type": "CommandEvent", "command": $scope.command});
         addConsoleSentItem("Command sent: " + $scope.command);
         $scope.command = "";
     }

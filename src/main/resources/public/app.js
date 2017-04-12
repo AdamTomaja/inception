@@ -1,0 +1,1 @@
+myApp = angular.module('inceptionGame', ['luegg.directives']);

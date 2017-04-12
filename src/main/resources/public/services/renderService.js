@@ -13,8 +13,8 @@ myApp.service("renderService", function () {
 
         camera.keysUp.push(87); // "w"
         camera.keysDown.push(83); // "s"
-        camera.keysUp.push(65); // "w"
-        camera.keysDown.push(68); // "s"
+        camera.keysLeft.push(65); // "a"
+        camera.keysRight.push(68); // "d"
 
         // target the camera to scene origin
         camera.setTarget(BABYLON.Vector3.Zero());

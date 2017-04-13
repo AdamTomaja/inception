@@ -26,7 +26,6 @@ myApp.service("renderService", function () {
     // create a basic light, aiming 0,1,0 - meaning, to the sky
     var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
 
-
     var playerMaterial = new BABYLON.StandardMaterial("playerMaterial", scene);
     playerMaterial.diffuseColor = new BABYLON.Color3(1, 0.2, 0.7);
 
@@ -34,6 +33,17 @@ myApp.service("renderService", function () {
     worldMaterial.diffuseColor = new BABYLON.Color3(1, 1, 0.7);
 
     var materialMapping = {"World": worldMaterial, "Player": playerMaterial};
+
+    // Skybox
+    var skybox = BABYLON.Mesh.CreateBox("skyBox", 10000.0, scene);
+    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("textures/skybox", scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.disableLighting = true;
+    skybox.material = skyboxMaterial;
 
     function addNode(entry) {
         var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.name, 16, 2, scene);

@@ -3,6 +3,8 @@ package com.cydercode.inception.model;
 import com.cydercode.inception.events.server.ConsoleEvent;
 import com.google.common.base.MoreObjects;
 
+import java.util.Map;
+
 public class Player extends Matter implements Named {
 
     private String nickname;
@@ -27,6 +29,13 @@ public class Player extends Matter implements Named {
     @Override
     public String getName() {
         return nickname;
+    }
+
+    @Override
+    public Map<String, Object> getPresentation() {
+        Map<String, Object> presentation = super.getPresentation();
+        presentation.put("name", nickname);
+        return presentation;
     }
 
     @Override

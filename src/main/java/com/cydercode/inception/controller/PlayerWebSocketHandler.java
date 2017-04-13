@@ -9,7 +9,6 @@ import com.cydercode.inception.events.client.CommandEvent;
 import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.events.server.JoinEvent;
 import com.cydercode.inception.game.Game;
-import com.cydercode.inception.io.NodePresenter;
 import com.cydercode.inception.model.Player;
 import com.google.gson.Gson;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -39,9 +38,6 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
     @Autowired
     private SessionsCache sessionsCache;
 
-    @Autowired
-    private NodePresenter nodePresenter;
-
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         EventingWebSocketSession eventingWebSocketSession = new EventingWebSocketSession(session);
@@ -61,7 +57,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
         });
 
         player.receiveMessage("Hello " + player.getNickname());
-        player.fireEvent(new JoinEvent(nodePresenter.nodeToMap(player)));
+        player.fireEvent(new JoinEvent(player.getPresentation()));
         player.fireEvent(game.createRenderFor(player));
         super.afterConnectionEstablished(session);
     }

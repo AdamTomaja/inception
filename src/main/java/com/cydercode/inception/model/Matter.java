@@ -1,8 +1,9 @@
 package com.cydercode.inception.model;
 
+import java.util.Map;
 import java.util.UUID;
 
-public class Matter extends Node implements Colored, Unique {
+public class Matter extends Node implements Unique {
 
     private Color color = Color.random();
     private String id = UUID.randomUUID().toString();
@@ -21,12 +22,16 @@ public class Matter extends Node implements Colored, Unique {
     }
 
     @Override
-    public Color getColor() {
-        return color;
+    public String getId() {
+        return id;
     }
 
     @Override
-    public String getId() {
-        return id;
+    public Map<String, Object> getPresentation() {
+        Map<String, Object> presentation = super.getPresentation();
+        presentation.put("id", id);
+        presentation.put("color", color);
+        presentation.put("location", location);
+        return presentation;
     }
 }

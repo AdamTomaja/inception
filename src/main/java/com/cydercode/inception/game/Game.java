@@ -3,7 +3,6 @@ package com.cydercode.inception.game;
 
 import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.server.*;
-import com.cydercode.inception.io.NodePresenter;
 import com.cydercode.inception.io.NodePrinter;
 import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;
@@ -16,12 +15,11 @@ public class Game extends Node {
 
     private TreeTraverser treeTraverser = new TreeTraverser();
     private NodePrinter nodePrinter = new NodePrinter();
-    private NodePresenter nodePresenter = new NodePresenter();
 
     public Player createNewPlayer(String name) {
         Player player = new Player(Location.random(), name);
         getChildren().add(player);
-        sendToNeighbors(player, new NodeCreatedEvent(nodePresenter.nodeToMap(player)));
+        sendToNeighbors(player, new NodeCreatedEvent(player.getPresentation()));
         return player;
     }
 
@@ -29,7 +27,7 @@ public class Game extends Node {
         World world = new World(player.getLocation(), worldname);
         Node playerParent = treeTraverser.findParent(player, this).get();
         playerParent.getChildren().add(world);
-        sendToNeighbors(world, new NodeCreatedEvent(nodePresenter.nodeToMap(world)));
+        sendToNeighbors(world, new NodeCreatedEvent(world.getPresentation()));
         return world;
     }
 
@@ -40,7 +38,7 @@ public class Game extends Node {
 
         for (Node child : parent.getChildren()) {
             if (child != player) {
-                children.add(nodePresenter.nodeToMap(child));
+                children.add(child.getPresentation());
             }
         }
 
@@ -132,7 +130,7 @@ public class Game extends Node {
     public Heritage createHeritage(Player player, String content) {
         Heritage heritage = new Heritage(content, player.getLocation());
         treeTraverser.findParent(player, this).get().getChildren().add(heritage);
-        sendToNeighbors(heritage, new NodeCreatedEvent(nodePresenter.nodeToMap(heritage)));
+        sendToNeighbors(heritage, new NodeCreatedEvent(heritage.getPresentation()));
         return heritage;
     }
 }

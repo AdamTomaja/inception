@@ -2,6 +2,8 @@ package com.cydercode.inception.model;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.Map;
+
 public class World extends Matter implements Named {
 
     private String name;
@@ -27,4 +29,10 @@ public class World extends Matter implements Named {
                 .toString();
     }
 
+    @Override
+    public Map<String, Object> getPresentation() {
+        Map<String, Object> presentation = super.getPresentation();
+        presentation.put("name", name);
+        return presentation;
+    }
 }

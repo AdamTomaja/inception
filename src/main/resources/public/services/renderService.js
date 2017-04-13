@@ -81,14 +81,24 @@ myApp.service("renderService", function () {
     }
 
     this.updateNodePosition = function (nodeid, position) {
-        models[nodeid].position.x = position.x;
-        models[nodeid].position.y = position.y;
-        models[nodeid].position.z = position.z;
+        var animationBoxX = new BABYLON.Animation("myAnimationX", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        var animationBoxY = new BABYLON.Animation("myAnimationY", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        var animationBoxZ = new BABYLON.Animation("myAnimationZ", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        animationBoxX.setKeys([{frame: 0, value: models[nodeid].position.x}, {frame: 100, value: position.x}]);
+        animationBoxY.setKeys([{frame: 0, value: models[nodeid].position.y}, {frame: 100, value: position.y}]);
+        animationBoxZ.setKeys([{frame: 0, value: models[nodeid].position.z}, {frame: 100, value: position.z}]);
+
+        var model = models[nodeid];
+        model.animations.push(animationBoxX);
+        model.animations.push(animationBoxY);
+        model.animations.push(animationBoxZ);
+
+        scene.beginAnimation(model, 0, 100, true);
     }
 
     this.addNode = addNode;
 
-    this.removeNode = function(nodeid) {
+    this.removeNode = function (nodeid) {
         models[nodeid].dispose();
     }
 

@@ -6,6 +6,10 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
     var lastPosition;
     var intervalId;
 
+    renderService.pickListener = function(node) {
+        console.log("Node picked:", node);
+    }
+
     var cameraPositionListener = function () {
         var cameraPosition = renderService.getCameraPosition();
         if (!cameraPosition.equals(lastPosition)) {

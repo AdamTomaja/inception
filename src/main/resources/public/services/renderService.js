@@ -1,11 +1,21 @@
 myApp.service("renderService", function () {
 
+    var $this = this;
+
     var models = {};
     var canvas = document.getElementById("render-canvas");
     var engine = new BABYLON.Engine(canvas, true);
 
+    this.pickListener = function (node) {
+        // dummy listener
+    }
+
     // create a basic BJS Scene object
     var scene = new BABYLON.Scene(engine);
+
+    scene.onPointerDown = function (evt, pickResult) {
+        $this.pickListener(pickResult.pickedMesh.node);
+    };
 
     // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
     var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 1, -15), scene);
@@ -45,7 +55,7 @@ myApp.service("renderService", function () {
 
     function createPlayer(entry) {
         var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.id, 16, 2, scene);
-
+        sphere.node = entry;
         setModelPosition(sphere, entry.location);
 
         var material = new BABYLON.StandardMaterial("playerMaterial", scene);
@@ -73,6 +83,7 @@ myApp.service("renderService", function () {
 
     function createWorld(entry) {
         var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.id, 16, 10, scene);
+        sphere.node = entry;
 
         setModelPosition(sphere, entry.location);
 
@@ -101,6 +112,8 @@ myApp.service("renderService", function () {
 
     function createHeritage(entry) {
         var box = BABYLON.Mesh.CreateBox("box", 6.0, scene);
+        box.node = entry;
+
         setModelPosition(box, entry.location);
 
         var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);

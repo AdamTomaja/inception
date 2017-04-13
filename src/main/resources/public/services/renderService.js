@@ -25,15 +25,7 @@ myApp.service("renderService", function () {
 
     // create a basic light, aiming 0,1,0 - meaning, to the sky
     var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
-
-    var playerMaterial = new BABYLON.StandardMaterial("playerMaterial", scene);
-    playerMaterial.diffuseColor = new BABYLON.Color3(1, 0.2, 0.7);
-
-    var worldMaterial = new BABYLON.StandardMaterial("worldMaterial", scene);
-    worldMaterial.diffuseColor = new BABYLON.Color3(1, 1, 0.7);
-
-    var materialMapping = {"World": worldMaterial, "Player": playerMaterial};
-
+    
     // Skybox
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 10000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -50,9 +42,12 @@ myApp.service("renderService", function () {
         sphere.position.x = entry.location.x
         sphere.position.y = entry.location.y
         sphere.position.z = entry.location.z;
-        sphere.material = materialMapping[entry.type];
-        models[entry.name] = sphere;
 
+        var material = new BABYLON.StandardMaterial("playerMaterial", scene);
+        material.diffuseColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
+
+        sphere.material = material;
+        models[entry.name] = sphere;
 
         var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
         var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
@@ -91,19 +86,10 @@ myApp.service("renderService", function () {
     }
 
     this.updateNodePosition = function (nodeid, position) {
-        var animationBoxX = new BABYLON.Animation("myAnimationX", "position.x", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-        var animationBoxY = new BABYLON.Animation("myAnimationY", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-        var animationBoxZ = new BABYLON.Animation("myAnimationZ", "position.z", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-        animationBoxX.setKeys([{frame: 0, value: models[nodeid].position.x}, {frame: 100, value: position.x}]);
-        animationBoxY.setKeys([{frame: 0, value: models[nodeid].position.y}, {frame: 100, value: position.y}]);
-        animationBoxZ.setKeys([{frame: 0, value: models[nodeid].position.z}, {frame: 100, value: position.z}]);
-
         var model = models[nodeid];
-        model.animations.push(animationBoxX);
-        model.animations.push(animationBoxY);
-        model.animations.push(animationBoxZ);
-
-        scene.beginAnimation(model, 0, 100, true);
+        model.position.x = position.x;
+        model.position.y = position.y;
+        model.position.z = position.z;
     }
 
     this.addNode = addNode;

@@ -31,11 +31,12 @@ public class Game extends Node {
     public RenderEvent createRenderFor(Player player) {
         Scene scene = new Scene();
         List<Object> children = new ArrayList<>();
-        Node parent = treeTraverser.findParent(player, this).get();;
+        Node parent = treeTraverser.findParent(player, this).get();
+        ;
 
         for (Node child : parent.getChildren()) {
-            if(child != player)
-            children.add(nodeToMap(child));
+            if (child != player)
+                children.add(nodeToMap(child));
         }
 
         scene.put("children", children);
@@ -53,6 +54,11 @@ public class Game extends Node {
         if (node instanceof Named) {
             childRepresentation.put("name", ((Named) node).getName());
         }
+
+        if (node instanceof Colored) {
+            childRepresentation.put("color", ((Colored) node).getColor());
+        }
+        
         return childRepresentation;
     }
 

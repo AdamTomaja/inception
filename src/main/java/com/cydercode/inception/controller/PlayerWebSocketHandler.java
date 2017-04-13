@@ -4,10 +4,14 @@ package com.cydercode.inception.controller;
 import com.cydercode.inception.controller.eventhandler.EventHandler;
 import com.cydercode.inception.controller.eventhandler.EventType;
 import com.cydercode.inception.events.Event;
+import com.cydercode.inception.events.EventListener;
 import com.cydercode.inception.events.client.CommandEvent;
 import com.cydercode.inception.events.server.ConsoleEvent;
+import com.cydercode.inception.events.server.JoinEvent;
 import com.cydercode.inception.game.Game;
+import com.cydercode.inception.model.Player;
 import com.google.gson.Gson;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +42,23 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         EventingWebSocketSession eventingWebSocketSession = new EventingWebSocketSession(session);
         LOGGER.info("Connection estabilished: {}", session);
-        eventingWebSocketSession.sendEvent(new ConsoleEvent("Hi! Type 'help' to get available commands."));
-        eventingWebSocketSession.sendEvent(new ConsoleEvent("Type 'join <nickname>' to start the game"));
+        Player player = game.createNewPlayer("anonymous" + RandomStringUtils.randomAlphabetic(5));
+        sessionsCache.addPlayer(session, player);
+
+        player.getChildren().add(new EventListener() {
+            @Override
+            public void onEvent(Event event) {
+                try {
+                    eventingWebSocketSession.sendEvent(event);
+                } catch (Exception e) {
+                    LOGGER.error("Error while sending to client", e);
+                }
+            }
+        });
+
+        player.receiveMessage("Hello " + player.getNickname());
+        player.fireEvent(new JoinEvent(game.nodeToMap(player)));
+        player.fireEvent(game.createRenderFor(player));
         super.afterConnectionEstablished(session);
     }
 

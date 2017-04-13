@@ -3,12 +3,16 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
     $scope.models = [];
     $scope.disconnected = true;
 
+    var lastPosition;
     var intervalId;
 
     var cameraPositionListener = function () {
         var cameraPosition = renderService.getCameraPosition();
-        console.log("Camera position", cameraPosition);
-        websocketService.sendEvent({"type": "PlayerPositionEvent", "location": cameraPosition});
+        if (!cameraPosition.equals(lastPosition)) {
+            console.log("Camera position", cameraPosition);
+            websocketService.sendEvent({"type": "PlayerPositionEvent", "location": cameraPosition});
+            lastPosition = cameraPosition.clone();
+        }
     };
 
     websocketService.addOnOpenListener(function () {
@@ -37,6 +41,7 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
             case "joinEvent":
                 console.log("Joined to game!");
                 intervalId = setInterval(cameraPositionListener, 1000);
+                renderService.setPlayerPosition(serverEvent.player.location);
                 break;
             case "nodePositionChangedEvent":
                 renderService.updateNodePosition(serverEvent.node, serverEvent.location);

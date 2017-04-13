@@ -3,9 +3,22 @@ package com.cydercode.inception.events.server;
 
 import com.cydercode.inception.events.Event;
 
+import java.util.Map;
+
 public class JoinEvent extends Event {
 
-    public JoinEvent() {
+    private Map<String, Object> player;
+
+    public JoinEvent(Map<String, Object> player) {
         super("joinEvent");
+        this.player = player;
+    }
+
+    public Map<String, Object> getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Map<String, Object> player) {
+        this.player = player;
     }
 }

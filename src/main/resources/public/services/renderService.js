@@ -112,6 +112,12 @@ myApp.service("renderService", function () {
         models[nodeid].dispose();
     }
 
+    this.setPlayerPosition = function (position) {
+        camera.position.x = position.x;
+        camera.position.y = position.y;
+        camera.position.z = position.z;
+    }
+
     engine.runRenderLoop(function () {
         scene.render();
     });

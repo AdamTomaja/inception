@@ -31,18 +31,18 @@ public class Game extends Node {
     public RenderEvent createRenderFor(Player player) {
         Scene scene = new Scene();
         List<Object> children = new ArrayList<>();
-        Node parent = treeTraverser.findParent(player, this).get();
-        for (Node child : parent.getChildren()) {
-            Map<String, Object> childRepresentation = nodeToMap(child);
+        Node parent = treeTraverser.findParent(player, this).get();;
 
-            children.add(childRepresentation);
+        for (Node child : parent.getChildren()) {
+            if(child != player)
+            children.add(nodeToMap(child));
         }
 
         scene.put("children", children);
         return new RenderEvent(scene);
     }
 
-    private Map<String, Object> nodeToMap(Node node) {
+    public Map<String, Object> nodeToMap(Node node) {
         Map<String, Object> childRepresentation = new HashMap<>();
         childRepresentation.put("type", node.getClass().getSimpleName());
 

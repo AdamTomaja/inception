@@ -30,7 +30,9 @@ public class Node {
     }
 
     public Map<String, Object> getPresentation() {
-        return new HashMap<>();
+        HashMap<String, Object> presentation = new HashMap<>();
+        presentation.put("type", this.getClass().getSimpleName());
+        return presentation;
     }
 
     @Override

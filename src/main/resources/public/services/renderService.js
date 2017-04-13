@@ -43,8 +43,9 @@ myApp.service("renderService", function () {
         model.position.z = position.z;
     }
 
-    function addNode(entry) {
+    function createPlayer(entry) {
         var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.id, 16, 2, scene);
+
         setModelPosition(sphere, entry.location);
 
         var material = new BABYLON.StandardMaterial("playerMaterial", scene);
@@ -68,6 +69,51 @@ myApp.service("renderService", function () {
         plane.position.y = sphere.position.y + 3;
 
         models[entry.id + "_plane"] = plane;
+    }
+
+    function createWorld(entry) {
+        var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.id, 16, 10, scene);
+
+        setModelPosition(sphere, entry.location);
+
+        var material = new BABYLON.StandardMaterial("playerMaterial", scene);
+        material.diffuseColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
+
+        sphere.material = material;
+        models[entry.id] = sphere;
+
+        var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
+        var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
+        planeMaterial.backFaceCulling = false;
+        var planeTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+        planeTexture.hasAlpha = true;
+        planeTexture.drawText(entry.name, 20, 250, "bold 130px Segoe UI", "white", "#555555");
+        planeMaterial.diffuseTexture = planeTexture;
+        planeMaterial.specularColor = new BABYLON.Color4(0, 0, 0, 0);
+        plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        plane.material = planeMaterial;
+
+        setModelPosition(plane, sphere.position);
+        plane.position.y = sphere.position.y + 3;
+
+        models[entry.id + "_plane"] = plane;
+    }
+
+    function createHeritage(entry) {
+        var box = BABYLON.Mesh.CreateBox("box", 6.0, scene);
+        setModelPosition(box, entry.location);
+
+        var material = new BABYLON.StandardMaterial("playerMaterial", scene);
+        material.diffuseColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
+
+        box.material = material;
+        models[entry.id] = box;
+    }
+
+    var renderersMapping = {"Player": createPlayer, "Heritage": createHeritage, "World": createWorld};
+
+    function addNode(entry) {
+        renderersMapping[entry.type](entry);
     }
 
     this.renderScene = function (sceneData) {

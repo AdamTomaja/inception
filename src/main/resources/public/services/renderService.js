@@ -82,7 +82,7 @@ myApp.service("renderService", function () {
         sphere.material = material;
         models[entry.id] = sphere;
 
-        var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
+        var plane = BABYLON.Mesh.CreatePlane("plane", 8, scene);
         var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
         planeMaterial.backFaceCulling = false;
         var planeTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
@@ -94,7 +94,7 @@ myApp.service("renderService", function () {
         plane.material = planeMaterial;
 
         setModelPosition(plane, sphere.position);
-        plane.position.y = sphere.position.y + 3;
+        plane.position.y = sphere.position.y + 10;
 
         models[entry.id + "_plane"] = plane;
     }
@@ -103,10 +103,16 @@ myApp.service("renderService", function () {
         var box = BABYLON.Mesh.CreateBox("box", 6.0, scene);
         setModelPosition(box, entry.location);
 
-        var material = new BABYLON.StandardMaterial("playerMaterial", scene);
-        material.diffuseColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
+        var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
+        planeMaterial.backFaceCulling = false;
+        var planeTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+        planeTexture.hasAlpha = true;
+        planeTexture.drawText(entry.name, 20, 250, "bold 130px Segoe UI", "white", "#555555");
+        planeMaterial.diffuseTexture = planeTexture;
+        planeMaterial.specularColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
+        box.material = planeMaterial;
 
-        box.material = material;
+
         models[entry.id] = box;
     }
 

@@ -127,8 +127,8 @@ public class Game extends Node {
                 .toString();
     }
 
-    public Heritage createHeritage(Player player, String content) {
-        Heritage heritage = new Heritage(content, player.getLocation());
+    public Heritage createHeritage(Player player, String name, String content) {
+        Heritage heritage = new Heritage(name, content, player.getLocation());
         treeTraverser.findParent(player, this).get().getChildren().add(heritage);
         sendToNeighbors(heritage, new NodeCreatedEvent(heritage.getPresentation()));
         return heritage;

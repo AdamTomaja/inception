@@ -7,16 +7,19 @@ import java.util.Map;
 public class Heritage extends Matter {
 
     private final String content;
+    private final String name;
 
-    public Heritage(String content, Location location) {
+    public Heritage(String name, String content, Location location) {
         super(location);
         this.content = content;
+        this.name = name;
     }
 
     @Override
     public Map<String, Object> getPresentation() {
         Map<String, Object> presentation = super.getPresentation();
         presentation.put("content", content);
+        presentation.put("name", name);
         return presentation;
     }
 

@@ -1,7 +1,11 @@
 package com.cydercode.inception.model;
 
-public class Matter extends Node {
+import java.util.UUID;
 
+public class Matter extends Node implements Colored, Unique {
+
+    private Color color = Color.random();
+    private String id = UUID.randomUUID().toString();
     private Location location;
 
     public Matter(Location location) {
@@ -14,5 +18,15 @@ public class Matter extends Node {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

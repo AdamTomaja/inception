@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.lang.String.format;
-import static java.util.Optional.of;
 
 @Component
 public class CommandExecutor {
@@ -37,7 +36,6 @@ public class CommandExecutor {
         Optional<PlayerAction> action = searchForAction(command.getAction());
         if (action.isPresent()) {
             action.get().execute(player, game, command);
-            player.fireEvent(game.createRenderFor(player));
         } else {
             player.fireEvent(new ConsoleEvent(format("Command %s not found", command.getAction())));
         }

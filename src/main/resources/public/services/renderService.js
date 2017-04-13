@@ -98,6 +98,7 @@ myApp.service("renderService", function () {
 
     this.removeNode = function (nodeid) {
         models[nodeid].dispose();
+        models[nodeid + "_plane"].dispose();
     }
 
     this.setPlayerPosition = function (position) {

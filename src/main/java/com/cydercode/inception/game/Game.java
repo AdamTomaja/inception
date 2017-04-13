@@ -3,21 +3,25 @@ package com.cydercode.inception.game;
 
 import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.server.*;
+import com.cydercode.inception.io.NodePresenter;
 import com.cydercode.inception.io.NodePrinter;
 import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Game extends Node {
 
     private TreeTraverser treeTraverser = new TreeTraverser();
     private NodePrinter nodePrinter = new NodePrinter();
+    private NodePresenter nodePresenter = new NodePresenter();
 
     public Player createNewPlayer(String name) {
         Player player = new Player(Location.random(), name);
         getChildren().add(player);
-        sendToNeighbors(player, new NodeCreatedEvent(nodeToMap(player)));
+        sendToNeighbors(player, new NodeCreatedEvent(nodePresenter.nodeToMap(player)));
         return player;
     }
 
@@ -25,6 +29,7 @@ public class Game extends Node {
         World world = new World(player.getLocation(), worldname);
         Node playerParent = treeTraverser.findParent(player, this).get();
         playerParent.getChildren().add(world);
+        sendToNeighbors(world, new NodeCreatedEvent(nodePresenter.nodeToMap(world)));
         return world;
     }
 
@@ -35,35 +40,12 @@ public class Game extends Node {
 
         for (Node child : parent.getChildren()) {
             if (child != player) {
-                children.add(nodeToMap(child));
+                children.add(nodePresenter.nodeToMap(child));
             }
         }
 
         scene.put("children", children);
         return new RenderEvent(scene);
-    }
-
-    public Map<String, Object> nodeToMap(Node node) {
-        Map<String, Object> childRepresentation = new HashMap<>();
-        childRepresentation.put("type", node.getClass().getSimpleName());
-
-        if (node instanceof Matter) {
-            childRepresentation.put("location", ((Matter) node).getLocation());
-        }
-
-        if (node instanceof Named) {
-            childRepresentation.put("name", ((Named) node).getName());
-        }
-
-        if (node instanceof Colored) {
-            childRepresentation.put("color", ((Colored) node).getColor());
-        }
-
-        if (node instanceof Unique) {
-            childRepresentation.put("id", ((Unique) node).getId());
-        }
-
-        return childRepresentation;
     }
 
     public Optional<Node> getNodeWithName(Player player, String nodeName) {
@@ -75,7 +57,7 @@ public class Game extends Node {
         sendToNeighbors(player, new NodePositionChangedEvent(player, location));
     }
 
-    private void sendToNeighbors(Player player, Event event) {
+    private void sendToNeighbors(Node player, Event event) {
         Node parent = treeTraverser.findParent(player, this).get();
         for (Node child : parent.getChildren()) {
             if (child != player) {
@@ -120,10 +102,6 @@ public class Game extends Node {
         });
     }
 
-    public String getGameStringRepresentation() {
-        return nodePrinter.print(this);
-    }
-
     public void tell(Player player, String message) {
         Node parentWorld = treeTraverser.findParent(player, this).get();
         parentWorld.getChildren().forEach(c -> {
@@ -154,6 +132,7 @@ public class Game extends Node {
     public Heritage createHeritage(Player player, String content) {
         Heritage heritage = new Heritage(content, player.getLocation());
         treeTraverser.findParent(player, this).get().getChildren().add(heritage);
+        sendToNeighbors(heritage, new NodeCreatedEvent(nodePresenter.nodeToMap(heritage)));
         return heritage;
     }
 }

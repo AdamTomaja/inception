@@ -37,11 +37,15 @@ myApp.service("renderService", function () {
     skyboxMaterial.disableLighting = true;
     skybox.material = skyboxMaterial;
 
+    function setModelPosition(model, position) {
+        model.position.x = position.x;
+        model.position.y = position.y;
+        model.position.z = position.z;
+    }
+
     function addNode(entry) {
         var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.id, 16, 2, scene);
-        sphere.position.x = entry.location.x
-        sphere.position.y = entry.location.y
-        sphere.position.z = entry.location.z;
+        setModelPosition(sphere, entry.location);
 
         var material = new BABYLON.StandardMaterial("playerMaterial", scene);
         material.diffuseColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
@@ -60,9 +64,8 @@ myApp.service("renderService", function () {
         plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
         plane.material = planeMaterial;
 
-        plane.position.x = sphere.position.x;
+        setModelPosition(plane, sphere.position);
         plane.position.y = sphere.position.y + 3;
-        plane.position.z = sphere.position.z;
 
         models[entry.id + "_plane"] = plane;
     }
@@ -86,10 +89,9 @@ myApp.service("renderService", function () {
     }
 
     this.updateNodePosition = function (nodeid, position) {
-        var model = models[nodeid];
-        model.position.x = position.x;
-        model.position.y = position.y;
-        model.position.z = position.z;
+        setModelPosition(models[nodeid], position);
+        setModelPosition(models[nodeid + "_plane"], position);
+        models[nodeid + "_plane"].position.y = position.y + 3;
     }
 
     this.addNode = addNode;

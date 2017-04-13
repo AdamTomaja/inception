@@ -3,15 +3,17 @@ package com.cydercode.inception.model;
 import com.cydercode.inception.events.server.ConsoleEvent;
 import com.google.common.base.MoreObjects;
 
-public class Player extends Matter implements Named, Colored {
+import java.util.UUID;
 
+public class Player extends Matter implements Named, Colored, Unique {
+
+    private String id = UUID.randomUUID().toString();
+    private Color color = Color.random();
     private String nickname;
-    private Color color;
 
     public Player(Location location, String nickname) {
         super(location);
         this.nickname = nickname;
-        color = Color.random();
     }
 
     public String getNickname() {
@@ -42,5 +44,10 @@ public class Player extends Matter implements Named, Colored {
     @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

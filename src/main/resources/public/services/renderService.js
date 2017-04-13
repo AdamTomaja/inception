@@ -25,7 +25,7 @@ myApp.service("renderService", function () {
 
     // create a basic light, aiming 0,1,0 - meaning, to the sky
     var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
-    
+
     // Skybox
     var skybox = BABYLON.Mesh.CreateBox("skyBox", 10000.0, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
@@ -38,7 +38,7 @@ myApp.service("renderService", function () {
     skybox.material = skyboxMaterial;
 
     function addNode(entry) {
-        var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.name, 16, 2, scene);
+        var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.id, 16, 2, scene);
         sphere.position.x = entry.location.x
         sphere.position.y = entry.location.y
         sphere.position.z = entry.location.z;
@@ -47,7 +47,7 @@ myApp.service("renderService", function () {
         material.diffuseColor = new BABYLON.Color3(entry.color.r, entry.color.g, entry.color.b);
 
         sphere.material = material;
-        models[entry.name] = sphere;
+        models[entry.id] = sphere;
 
         var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
         var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
@@ -64,7 +64,7 @@ myApp.service("renderService", function () {
         plane.position.y = sphere.position.y + 3;
         plane.position.z = sphere.position.z;
 
-        models[entry.name + "_plane"] = plane;
+        models[entry.id + "_plane"] = plane;
     }
 
     this.renderScene = function (sceneData) {

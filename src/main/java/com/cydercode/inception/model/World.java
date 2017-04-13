@@ -2,15 +2,17 @@ package com.cydercode.inception.model;
 
 import com.google.common.base.MoreObjects;
 
-public class World extends Matter implements Named, Colored {
+import java.util.UUID;
 
+public class World extends Matter implements Named, Colored, Unique {
+
+    private Color color = Color.random();
+    private String id = UUID.randomUUID().toString();
     private String name;
-    private Color color;
 
     public World(Location location, String name) {
         super(location);
         this.name = name;
-        color = Color.random();
     }
 
     @Override
@@ -33,5 +35,10 @@ public class World extends Matter implements Named, Colored {
     @Override
     public Color getColor() {
         return color;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

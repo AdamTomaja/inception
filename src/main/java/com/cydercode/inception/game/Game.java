@@ -32,11 +32,11 @@ public class Game extends Node {
         Scene scene = new Scene();
         List<Object> children = new ArrayList<>();
         Node parent = treeTraverser.findParent(player, this).get();
-        ;
 
         for (Node child : parent.getChildren()) {
-            if (child != player)
+            if (child != player) {
                 children.add(nodeToMap(child));
+            }
         }
 
         scene.put("children", children);
@@ -58,7 +58,11 @@ public class Game extends Node {
         if (node instanceof Colored) {
             childRepresentation.put("color", ((Colored) node).getColor());
         }
-        
+
+        if (node instanceof Unique) {
+            childRepresentation.put("id", ((Unique) node).getId());
+        }
+
         return childRepresentation;
     }
 
@@ -81,7 +85,7 @@ public class Game extends Node {
     }
 
     public void removePlayer(Player player) {
-        sendToNeighbors(player, new NodeRemovedEvent(player.getName()));
+        sendToNeighbors(player, new NodeRemovedEvent(player));
         treeTraverser.findParent(player, this).get().getChildren().remove(player);
     }
 

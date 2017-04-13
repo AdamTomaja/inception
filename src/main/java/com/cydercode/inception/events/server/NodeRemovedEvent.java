@@ -2,14 +2,15 @@ package com.cydercode.inception.events.server;
 
 
 import com.cydercode.inception.events.Event;
+import com.cydercode.inception.model.Unique;
 
 public class NodeRemovedEvent extends Event {
 
     private String node;
 
-    public NodeRemovedEvent(String node) {
+    public NodeRemovedEvent(Unique node) {
         super("nodeRemovedEvent");
-        this.node = node;
+        this.node = node.getId();
     }
 
     public String getNode() {

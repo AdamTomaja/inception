@@ -38,8 +38,14 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
                 console.log("Joined to game!");
                 intervalId = setInterval(cameraPositionListener, 1000);
                 break;
-            case "playerPositionChangedEvent":
-                renderService.updateNodePosition(serverEvent.player, serverEvent.location);
+            case "nodePositionChangedEvent":
+                renderService.updateNodePosition(serverEvent.node, serverEvent.location);
+                break;
+            case "nodeCreatedEvent":
+                renderService.addNode(serverEvent.node);
+                break;
+            case "nodeRemovedEvent":
+                renderService.removeNode(serverEvent.node);
                 break;
         }
         $scope.$apply();

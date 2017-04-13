@@ -1,9 +1,8 @@
 package com.cydercode.inception.game;
 
 
-import com.cydercode.inception.events.server.PlayerPositionChangedEvent;
-import com.cydercode.inception.events.server.RenderEvent;
-import com.cydercode.inception.events.server.Scene;
+import com.cydercode.inception.events.Event;
+import com.cydercode.inception.events.server.*;
 import com.cydercode.inception.io.NodePrinter;
 import com.cydercode.inception.model.*;
 import com.google.common.base.MoreObjects;
@@ -18,6 +17,7 @@ public class Game extends Node {
     public Player createNewPlayer(String name) {
         Player player = new Player(Location.random(), name);
         getChildren().add(player);
+        sendToNeighbors(player, new NodeCreatedEvent(nodeToMap(player)));
         return player;
     }
 
@@ -33,16 +33,7 @@ public class Game extends Node {
         List<Object> children = new ArrayList<>();
         Node parent = treeTraverser.findParent(player, this).get();
         for (Node child : parent.getChildren()) {
-            Map<String, Object> childRepresentation = new HashMap<>();
-            childRepresentation.put("type", child.getClass().getSimpleName());
-
-            if (child instanceof Matter) {
-                childRepresentation.put("location", ((Matter) child).getLocation());
-            }
-
-            if (child instanceof Named) {
-                childRepresentation.put("name", ((Named) child).getName());
-            }
+            Map<String, Object> childRepresentation = nodeToMap(child);
 
             children.add(childRepresentation);
         }
@@ -51,18 +42,41 @@ public class Game extends Node {
         return new RenderEvent(scene);
     }
 
+    private Map<String, Object> nodeToMap(Node node) {
+        Map<String, Object> childRepresentation = new HashMap<>();
+        childRepresentation.put("type", node.getClass().getSimpleName());
+
+        if (node instanceof Matter) {
+            childRepresentation.put("location", ((Matter) node).getLocation());
+        }
+
+        if (node instanceof Named) {
+            childRepresentation.put("name", ((Named) node).getName());
+        }
+        return childRepresentation;
+    }
+
     public Optional<Node> getNodeWithName(Player player, String nodeName) {
         return treeTraverser.findWithName(nodeName, treeTraverser.findParent(player, this).get());
     }
 
     public void teleport(Player player, Location location) {
+        player.setLocation(location);
+        sendToNeighbors(player, new NodePositionChangedEvent(player, location));
+    }
+
+    private void sendToNeighbors(Player player, Event event) {
         Node parent = treeTraverser.findParent(player, this).get();
-        for(Node child : parent.getChildren()) {
-            if(child != player) {
-                child.fireEvent(new PlayerPositionChangedEvent(player, location));
+        for (Node child : parent.getChildren()) {
+            if (child != player) {
+                child.fireEvent(event);
             }
         }
-        player.setLocation(location);
+    }
+
+    public void removePlayer(Player player) {
+        sendToNeighbors(player, new NodeRemovedEvent(player.getName()));
+        treeTraverser.findParent(player, this).get().getChildren().remove(player);
     }
 
     public World teleport(Player player, String nodename) {

@@ -4,23 +4,23 @@ import com.cydercode.inception.events.Event;
 import com.cydercode.inception.model.Location;
 import com.cydercode.inception.model.Player;
 
-public class PlayerPositionChangedEvent extends Event {
+public class NodePositionChangedEvent extends Event {
 
-    private String player;
+    private String node;
     private Location location;
 
-    public PlayerPositionChangedEvent(Player player, Location location) {
-        super("playerPositionChangedEvent");
-        this.player = player.getName();
+    public NodePositionChangedEvent(Player player, Location location) {
+        super("nodePositionChangedEvent");
+        this.node = player.getName();
         this.location = location;
     }
 
-    public String getPlayer() {
-        return player;
+    public String getNode() {
+        return node;
     }
 
-    public void setPlayer(String player) {
-        this.player = player;
+    public void setNode(String node) {
+        this.node = node;
     }
 
     public Location getLocation() {

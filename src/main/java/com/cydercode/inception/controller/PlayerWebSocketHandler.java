@@ -80,7 +80,11 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         LOGGER.info("Connection closed: {} - {}", session, status);
-        sessionsCache.removeSession(session);
+        if (sessionsCache.hasSession(session)) {
+            game.removePlayer(sessionsCache.getMandatoryPlayer(session));
+            sessionsCache.removeSession(session);
+        }
+
         super.afterConnectionClosed(session, status);
     }
 }

@@ -35,6 +35,33 @@ myApp.service("renderService", function () {
 
     var materialMapping = {"World": worldMaterial, "Player": playerMaterial};
 
+    function addNode(entry) {
+        var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.name, 16, 2, scene);
+        sphere.position.x = entry.location.x
+        sphere.position.y = entry.location.y
+        sphere.position.z = entry.location.z;
+        sphere.material = materialMapping[entry.type];
+        models[entry.name] = sphere;
+
+
+        var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
+        var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
+        planeMaterial.backFaceCulling = false;
+        var planeTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+        planeTexture.hasAlpha = true;
+        planeTexture.drawText(entry.name, 20, 250, "bold 130px Segoe UI", "white", "#555555");
+        planeMaterial.diffuseTexture = planeTexture;
+        planeMaterial.specularColor = new BABYLON.Color4(0, 0, 0, 0);
+        plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+        plane.material = planeMaterial;
+
+        plane.position.x = sphere.position.x;
+        plane.position.y = sphere.position.y + 3;
+        plane.position.z = sphere.position.z;
+
+        models[entry.name + "_plane"] = plane;
+    }
+
     this.renderScene = function (sceneData) {
         models = {};
         console.log("Rendering", scene);
@@ -45,31 +72,7 @@ myApp.service("renderService", function () {
 
         sceneData.children.forEach(function (entry) {
             console.log(entry);
-            var sphere = BABYLON.Mesh.CreateSphere('sphere1' + entry.name, 16, 2, scene);
-            sphere.position.x = entry.location.x
-            sphere.position.y = entry.location.y
-            sphere.position.z = entry.location.z;
-            sphere.material = materialMapping[entry.type];
-            models[entry.name] = sphere;
-
-
-            var plane = BABYLON.Mesh.CreatePlane("plane", 3, scene);
-            var planeMaterial = new BABYLON.StandardMaterial("plane material", scene);
-            planeMaterial.backFaceCulling = false;
-            var planeTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
-            planeTexture.hasAlpha = true;
-            planeTexture.drawText(entry.name, 20, 250, "bold 130px Segoe UI", "white", "#555555");
-            planeMaterial.diffuseTexture = planeTexture;
-            planeMaterial.specularColor = new BABYLON.Color4(0, 0, 0, 0);
-            plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-            plane.material = planeMaterial;
-
-            plane.position.x = sphere.position.x;
-            plane.position.y = sphere.position.y + 3;
-            plane.position.z = sphere.position.z;
-
-            models[entry.name + "_plane"] = plane;
-
+            addNode(entry);
         });
     }
 
@@ -81,6 +84,12 @@ myApp.service("renderService", function () {
         models[nodeid].position.x = position.x;
         models[nodeid].position.y = position.y;
         models[nodeid].position.z = position.z;
+    }
+
+    this.addNode = addNode;
+
+    this.removeNode = function(nodeid) {
+        models[nodeid].dispose();
     }
 
     engine.runRenderLoop(function () {

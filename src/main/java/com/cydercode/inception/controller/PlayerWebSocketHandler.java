@@ -8,6 +8,7 @@ import com.cydercode.inception.events.EventListener;
 import com.cydercode.inception.events.client.CommandEvent;
 import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.events.server.JoinEvent;
+import com.cydercode.inception.exampledata.ExampleNamesProvider;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import com.google.gson.Gson;
@@ -40,11 +41,14 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
     @Autowired
     private SessionsCache sessionsCache;
 
+    @Autowired
+    private ExampleNamesProvider namesProvider;
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         EventingWebSocketSession eventingWebSocketSession = new EventingWebSocketSession(session);
         LOGGER.info("Connection estabilished: {}", session);
-        Player player = game.createNewPlayer("anonymous" + RandomStringUtils.randomAlphabetic(5));
+        Player player = game.createNewPlayer(namesProvider.getRandomName());
         sessionsCache.addPlayer(session, player);
 
         player.getChildren().add(new EventListener() {

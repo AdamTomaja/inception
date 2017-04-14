@@ -3,6 +3,7 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
     $scope.models = [];
     $scope.disconnected = true;
 
+    var playerNodeId;
     var lastPosition;
     var intervalId;
 
@@ -54,9 +55,14 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
                 console.log("Joined to game!");
                 intervalId = setInterval(cameraPositionListener, 100);
                 renderService.setPlayerPosition(serverEvent.player.location);
+                playerNodeId = serverEvent.player.id;
                 break;
             case "nodePositionChangedEvent":
-                renderService.updateNodePosition(serverEvent.node, serverEvent.location);
+                if(serverEvent.node == playerNodeId) {
+                    renderService.setPlayerPosition(serverEvent.location);
+                } else {
+                    renderService.updateNodePosition(serverEvent.node, serverEvent.location);
+                }
                 break;
             case "nodeCreatedEvent":
                 renderService.addNode(serverEvent.node);
@@ -83,7 +89,6 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
 
     function sendCommand(command) {
         websocketService.sendEvent({"type": "CommandEvent", "command": command});
-        addConsoleSentItem("Command sent: " + command);
     }
 
     $scope.execute = function () {

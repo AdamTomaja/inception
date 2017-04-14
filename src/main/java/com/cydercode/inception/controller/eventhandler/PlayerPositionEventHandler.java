@@ -21,6 +21,6 @@ public class PlayerPositionEventHandler implements EventHandler<PlayerPositionEv
     @Override
     public void handleEvent(PlayerPositionEvent event, EventingWebSocketSession session) throws Exception {
         Player player = sessionsCache.getMandatoryPlayer(session.getWebSocketSession());
-        game.teleport(player, event.getLocation());
+        game.playerMoved(player, event.getLocation());
     }
 }

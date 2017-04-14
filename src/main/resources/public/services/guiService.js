@@ -6,6 +6,8 @@ myApp.service("guiService", function (renderService) {
 
     $this = this;
 
+    const MAX_BUFFER_LENGTH = 13;
+
     var buffer = [];
     var timeoutId;
 
@@ -44,7 +46,7 @@ myApp.service("guiService", function (renderService) {
         clearTimeout(timeoutId);
 
         buffer.push(text);
-        if (buffer.length > 5) {
+        if (buffer.length > MAX_BUFFER_LENGTH) {
             buffer.splice(0, 1);
         }
 

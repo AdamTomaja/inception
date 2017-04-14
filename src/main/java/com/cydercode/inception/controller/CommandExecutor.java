@@ -2,7 +2,7 @@ package com.cydercode.inception.controller;
 
 import com.cydercode.inception.controller.action.ActionName;
 import com.cydercode.inception.controller.action.PlayerAction;
-import com.cydercode.inception.events.server.ConsoleEvent;
+import com.cydercode.inception.controller.action.ShoutAction;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import org.slf4j.Logger;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
-
-import static java.lang.String.format;
 
 @Component
 public class CommandExecutor {
@@ -27,6 +25,9 @@ public class CommandExecutor {
     @Autowired
     private List<PlayerAction> playerActions;
 
+    @Autowired
+    private ShoutAction defaultAction;
+
     @PostConstruct
     public void init() {
         LOGGER.info("Loaded actions: {}", playerActions);
@@ -37,8 +38,13 @@ public class CommandExecutor {
         if (action.isPresent()) {
             action.get().execute(player, game, command);
         } else {
-            player.fireEvent(new ConsoleEvent(format("Command %s not found", command.getAction())));
+            defaultAction.execute(player, game, pripareForDefaultAction(command));
         }
+    }
+
+    private Command pripareForDefaultAction(Command command) {
+        command.getParameters().add(0, command.getAction());
+        return command;
     }
 
     private Optional<PlayerAction> searchForAction(String actionName) {

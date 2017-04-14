@@ -5,6 +5,8 @@ import com.google.common.base.MoreObjects;
 
 import java.util.Map;
 
+import static java.lang.String.format;
+
 public class Player extends Matter implements Named {
 
     private String nickname;
@@ -22,8 +24,8 @@ public class Player extends Matter implements Named {
         this.nickname = nickname;
     }
 
-    public void receiveMessage(String message) {
-        fireEvent(new ConsoleEvent(nickname + " received message: " + message));
+    public void receiveMessage(Player sender, String mode, String message) {
+        fireEvent(new ConsoleEvent(format("[%s][%s]: %s", sender.getName(), mode, message)));
     }
 
     @Override

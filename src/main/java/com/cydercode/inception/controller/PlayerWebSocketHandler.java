@@ -24,6 +24,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.String.format;
+
 @Component
 public class PlayerWebSocketHandler extends TextWebSocketHandler {
 
@@ -56,7 +58,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
             }
         });
 
-        player.receiveMessage("Hello " + player.getNickname());
+        player.fireEvent(new ConsoleEvent(format("Hello %s!", player.getName())));
         player.fireEvent(new JoinEvent(player.getPresentation()));
         player.fireEvent(game.createRenderFor(player));
         super.afterConnectionEstablished(session);

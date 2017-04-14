@@ -51,9 +51,21 @@ public class Game extends Node {
         return treeTraverser.findWithName(nodeName, treeTraverser.findParent(player, this).get());
     }
 
-    public void teleport(Player player, Location location) {
+    public void playerMoved(Player player, Location location) {
         player.setLocation(location);
         sendToNeighbors(player, new NodePositionChangedEvent(player, location));
+    }
+
+    public void teleport(Player player, Location location) {
+        player.setLocation(location);
+        sendToAllOnTheWorld(player, new NodePositionChangedEvent(player, location));
+    }
+
+    private void sendToAllOnTheWorld(Player player, Event event) {
+        Node parent = treeTraverser.findParent(player, this).get();
+        for (Node child : parent.getChildren()) {
+            child.fireEvent(event);
+        }
     }
 
     private void sendToNeighbors(Node player, Event event) {
@@ -89,14 +101,16 @@ public class Game extends Node {
 
     public void teleport(Player player, World world) {
         Node oldParent = treeTraverser.findParent(player, this).get();
+        sendToNeighbors(player, new NodeRemovedEvent(player));
         oldParent.getChildren().remove(player);
         world.getChildren().add(player);
+        player.fireEvent(createRenderFor(player));
     }
 
     public void shout(Player player, String message) {
         treeTraverser.executeForEach(this, n -> {
-            if (n instanceof Player && n != player) {
-                ((Player) n).receiveMessage(message);
+            if (n instanceof Player) {
+                ((Player) n).receiveMessage(player, "shout", message);
             }
         });
     }
@@ -104,8 +118,8 @@ public class Game extends Node {
     public void tell(Player player, String message) {
         Node parentWorld = treeTraverser.findParent(player, this).get();
         parentWorld.getChildren().forEach(c -> {
-            if (c instanceof Player && c != player) {
-                ((Player) c).receiveMessage(message);
+            if (c instanceof Player) {
+                ((Player) c).receiveMessage(player, "tell", message);
             }
         });
     }

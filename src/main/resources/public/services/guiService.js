@@ -1,6 +1,6 @@
 myApp.service("guiService", function (renderService) {
 
-    this.lineReceivedListener = function() {
+    this.lineReceivedListener = function () {
         // dummy listener
     }
 
@@ -31,14 +31,25 @@ myApp.service("guiService", function (renderService) {
         paddingTop: 10
     });
 
+    new BABYLON.Rectangle2D({
+        parent: canvas,
+        id: "insideRect",
+        marginAlignment: "v: bottom, h: left",
+        width: 5000,
+        height: 40,
+        fill: "#0000FF6F",
+    });
+
     var inputText = new BABYLON.Text2D("Hello", {
         parent: canvas,
         id: "text",
         marginAlignment: "h: left, v:bottom",
         fontName: "15pt Arial",
         paddingLeft: 10,
-        paddingTop: 0
+        paddingTop: -8
     });
+
+
 
     canvas.levelVisible = true;
 
@@ -62,7 +73,7 @@ myApp.service("guiService", function (renderService) {
     scene.actionManager = new BABYLON.ActionManager(scene);
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
         var key = evt.sourceEvent.key;
-        switch(key) {
+        switch (key) {
             case "`":
                 canvas.levelVisible = !canvas.levelVisible;
                 consoleEnabled = canvas.levelVisible;
@@ -77,7 +88,7 @@ myApp.service("guiService", function (renderService) {
                 inputBuffer = "";
                 break;
             default:
-                if(canvas.levelVisible && key.length == 1) {
+                if (canvas.levelVisible && key.length == 1) {
                     inputBuffer += key;
                 }
         }

@@ -8,6 +8,15 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
 
     renderService.pickListener = function(node) {
         console.log("Node picked:", node);
+        addConsoleReceivedItem("================");
+        addConsoleReceivedItem("Item type: " + node.type);
+        addConsoleReceivedItem("Item name: " + node.name);
+        addConsoleReceivedItem("Item content: " + node.content);
+    }
+
+    guiService.lineReceivedListener = function(line) {
+        console.log("Line received: ", line);
+        sendCommand(line);
     }
 
     var cameraPositionListener = function () {
@@ -72,10 +81,13 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
         addConsoleItem(content, "alert-info");
     }
 
+    function sendCommand(command) {
+        websocketService.sendEvent({"type": "CommandEvent", "command": command});
+        addConsoleSentItem("Command sent: " + command);
+    }
 
     $scope.execute = function () {
-        websocketService.sendEvent({"type": "CommandEvent", "command": $scope.command});
-        addConsoleSentItem("Command sent: " + $scope.command);
+        sendCommand($scope.command);
         $scope.command = "";
     }
 

@@ -14,7 +14,10 @@ myApp.service("renderService", function () {
     var scene = new BABYLON.Scene(engine);
 
     scene.onPointerDown = function (evt, pickResult) {
-        $this.pickListener(pickResult.pickedMesh.node);
+        var node = pickResult.pickedMesh.node;
+        if (node != undefined) {
+            $this.pickListener(node);
+        }
     };
 
     // create a FreeCamera, and set its position to (x:0, y:5, z:-10)

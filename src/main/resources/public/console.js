@@ -1,4 +1,4 @@
-myApp.controller('consoleController', function ($scope, renderService, websocketService) {
+myApp.controller('consoleController', function ($scope, renderService, websocketService, guiService) {
     $scope.consoleItems = [];
     $scope.models = [];
     $scope.disconnected = true;
@@ -13,7 +13,6 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
     var cameraPositionListener = function () {
         var cameraPosition = renderService.getCameraPosition();
         if (!cameraPosition.equals(lastPosition)) {
-            console.log("Camera position", cameraPosition);
             websocketService.sendEvent({"type": "PlayerPositionEvent", "location": cameraPosition});
             lastPosition = cameraPosition.clone();
         }
@@ -61,6 +60,7 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
     });
 
     function addConsoleItem(content, style) {
+        guiService.println(content);
         $scope.consoleItems.push({content: content, style: style});
     }
 

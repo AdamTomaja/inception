@@ -172,6 +172,10 @@ myApp.service("renderService", function () {
         camera.position.z = position.z;
     }
 
+    this.getScene = function () {
+        return scene;
+    }
+
     engine.runRenderLoop(function () {
         scene.render();
     });

@@ -2,7 +2,6 @@ package com.cydercode.inception.controller.eventhandler;
 
 import com.cydercode.inception.controller.*;
 import com.cydercode.inception.events.client.CommandEvent;
-import com.cydercode.inception.events.server.ConsoleEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
 import org.slf4j.Logger;
@@ -33,15 +32,7 @@ public class CommandEventHandler implements EventHandler<CommandEvent> {
     public void handleEvent(CommandEvent event, EventingWebSocketSession session) throws Exception {
         Command command = commandParser.parse(event.getCommand());
         LOGGER.info("Parsed command: {}", command);
-        switch (command.getAction()) {
-            case "help":
-                session.sendEvent(new ConsoleEvent("join <nickname>, shout <message>"));
-                break;
-
-            default:
-                commandExecutor.execute(getMandatoryPlayer(session.getWebSocketSession()), command);
-                break;
-        }
+        commandExecutor.execute(getMandatoryPlayer(session.getWebSocketSession()), command);
     }
 
 

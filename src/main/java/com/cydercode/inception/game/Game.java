@@ -148,4 +148,9 @@ public class Game extends Node {
         sendToNeighbors(heritage, new NodeCreatedEvent(heritage.getPresentation()));
         return heritage;
     }
+
+    public void setName(Player player, String name) {
+        sendToNeighbors(player, new ConsoleEvent(String.format("%s changed name to %s", player.getName(), name)));
+        player.setNickname(name);
+    }
 }

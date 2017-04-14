@@ -3,8 +3,9 @@ package com.cydercode.inception.game;
 
 import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.server.*;
-import com.cydercode.inception.io.NodePrinter;
-import com.cydercode.inception.model.*;
+import com.cydercode.inception.model.Location;
+import com.cydercode.inception.model.Node;
+import com.cydercode.inception.model.Player;
 import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
@@ -63,17 +64,12 @@ public class Game extends Node {
         treeTraverser.findParent(player, this).get().getChildren().remove(player);
     }
 
-    public Node getWorldOf(Player player) {
-        return treeTraverser.findParent(player, this).get();
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("Place", "Universe")
                 .toString();
     }
-
 
 
     public void setName(Player player, String name) {

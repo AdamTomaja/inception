@@ -20,8 +20,13 @@ public class WorldAction implements PlayerAction {
 
     @Override
     public void execute(Player player, Game game, Command command) {
-        World world = createWorld(player, game, command.getParameters().get(0));
-        player.fireEvent(new ConsoleEvent(world + " world created at " + world.getLocation()));
+        if (command.getParameters().isEmpty()) {
+            Node playerPlace = treeTraverser.findParent(player, game).get();
+            player.fireEvent(new ConsoleEvent("You are on " + playerPlace + " world"));
+        } else {
+            World world = createWorld(player, game, command.getParameters().get(0));
+            player.fireEvent(new ConsoleEvent(world + " world created at " + world.getLocation()));
+        }
     }
 
     public World createWorld(Player player, Game game, String worldName) {

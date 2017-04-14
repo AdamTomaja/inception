@@ -68,12 +68,13 @@ public class TeleportAction implements PlayerAction {
         }
     }
 
-    public void teleport(Game game, Player player, World world) {
+    public void teleport(Game game, Player player, Node place) {
         Node oldParent = treeTraverser.findParent(player, game).get();
         game.sendToNeighbors(player, new NodeRemovedEvent(player));
         oldParent.getChildren().remove(player);
-        world.getChildren().add(player);
+        place.getChildren().add(player);
         player.fireEvent(game.createRenderFor(player));
         game.sendToNeighbors(player, new NodeCreatedEvent(player));
+        player.fireEvent(new ConsoleEvent("Teleported You to " + place));
     }
 }

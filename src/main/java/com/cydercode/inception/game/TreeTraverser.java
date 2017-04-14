@@ -2,10 +2,12 @@ package com.cydercode.inception.game;
 
 import com.cydercode.inception.model.Named;
 import com.cydercode.inception.model.Node;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@Component
 public class TreeTraverser {
 
     public Optional<Node> findParent(Node node, Node tree) {

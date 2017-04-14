@@ -14,7 +14,6 @@ import java.util.Optional;
 public class Game extends Node {
 
     private TreeTraverser treeTraverser = new TreeTraverser();
-    private NodePrinter nodePrinter = new NodePrinter();
 
     public Player createNewPlayer(String name) {
         Player player = new Player(Location.random(), name);
@@ -22,14 +21,6 @@ public class Game extends Node {
         sendToNeighbors(player, new NodeCreatedEvent(player.getPresentation()));
         sendToNeighbors(player, new ConsoleEvent(player.getName() + " joined to Your world!"));
         return player;
-    }
-
-    public World createWorld(Player player, String worldname) {
-        World world = new World(player.getLocation(), worldname);
-        Node playerParent = treeTraverser.findParent(player, this).get();
-        playerParent.getChildren().add(world);
-        sendToNeighbors(world, new NodeCreatedEvent(world.getPresentation()));
-        return world;
     }
 
     public RenderEvent createRenderFor(Player player) {
@@ -51,24 +42,14 @@ public class Game extends Node {
         return treeTraverser.findWithName(nodeName, treeTraverser.findParent(player, this).get());
     }
 
-    public void playerMoved(Player player, Location location) {
-        player.setLocation(location);
-        sendToNeighbors(player, new NodePositionChangedEvent(player, location));
-    }
-
-    public void teleport(Player player, Location location) {
-        player.setLocation(location);
-        sendToAllOnTheWorld(player, new NodePositionChangedEvent(player, location));
-    }
-
-    private void sendToAllOnTheWorld(Player player, Event event) {
+    public void sendToAllOnTheWorld(Player player, Event event) {
         Node parent = treeTraverser.findParent(player, this).get();
         for (Node child : parent.getChildren()) {
             child.fireEvent(event);
         }
     }
 
-    private void sendToNeighbors(Node player, Event event) {
+    public void sendToNeighbors(Node player, Event event) {
         Node parent = treeTraverser.findParent(player, this).get();
         for (Node child : parent.getChildren()) {
             if (child != player) {
@@ -82,55 +63,6 @@ public class Game extends Node {
         treeTraverser.findParent(player, this).get().getChildren().remove(player);
     }
 
-    public World teleport(Player player, String nodename) {
-        Node nodeParent = treeTraverser.findParent(player, this).get();
-        Optional<Node> nodeWithName = treeTraverser.findWithName(nodename, nodeParent);
-        if (!nodeWithName.isPresent()) {
-            throw new RuntimeException("Cannot find node with name " + nodename);
-        }
-
-        Node world = nodeWithName.get();
-
-        if (world instanceof World) {
-            teleport(player, (World) world);
-            return (World) world;
-        } else {
-            throw new RuntimeException("You can teleport only to world!");
-        }
-    }
-
-    public void teleport(Player player, World world) {
-        Node oldParent = treeTraverser.findParent(player, this).get();
-        sendToNeighbors(player, new NodeRemovedEvent(player));
-        oldParent.getChildren().remove(player);
-        world.getChildren().add(player);
-        player.fireEvent(createRenderFor(player));
-    }
-
-    public void shout(Player player, String message) {
-        treeTraverser.executeForEach(this, n -> {
-            if (n instanceof Player) {
-                ((Player) n).receiveMessage(player, "shout", message);
-            }
-        });
-    }
-
-    public void tell(Player player, String message) {
-        Node parentWorld = treeTraverser.findParent(player, this).get();
-        parentWorld.getChildren().forEach(c -> {
-            if (c instanceof Player) {
-                ((Player) c).receiveMessage(player, "tell", message);
-            }
-        });
-    }
-
-    public List<Node> lookAround(Player player) {
-        Node parentWorld = treeTraverser.findParent(player, this).get();
-        List<Node> result = new ArrayList<>(parentWorld.getChildren());
-        result.remove(player);
-        return result;
-    }
-
     public Node getWorldOf(Player player) {
         return treeTraverser.findParent(player, this).get();
     }
@@ -142,12 +74,7 @@ public class Game extends Node {
                 .toString();
     }
 
-    public Heritage createHeritage(Player player, String name, String content) {
-        Heritage heritage = new Heritage(name, content, player.getLocation());
-        treeTraverser.findParent(player, this).get().getChildren().add(heritage);
-        sendToNeighbors(heritage, new NodeCreatedEvent(heritage.getPresentation()));
-        return heritage;
-    }
+
 
     public void setName(Player player, String name) {
         sendToNeighbors(player, new ConsoleEvent(String.format("%s changed name to %s", player.getName(), name)));

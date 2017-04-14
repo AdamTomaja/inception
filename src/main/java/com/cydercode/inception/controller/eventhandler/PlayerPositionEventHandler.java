@@ -2,6 +2,7 @@ package com.cydercode.inception.controller.eventhandler;
 
 import com.cydercode.inception.controller.EventingWebSocketSession;
 import com.cydercode.inception.controller.SessionsCache;
+import com.cydercode.inception.controller.action.TeleportAction;
 import com.cydercode.inception.events.client.PlayerPositionEvent;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Player;
@@ -18,9 +19,12 @@ public class PlayerPositionEventHandler implements EventHandler<PlayerPositionEv
     @Autowired
     private SessionsCache sessionsCache;
 
+    @Autowired
+    private TeleportAction teleportAction;
+
     @Override
     public void handleEvent(PlayerPositionEvent event, EventingWebSocketSession session) throws Exception {
         Player player = sessionsCache.getMandatoryPlayer(session.getWebSocketSession());
-        game.playerMoved(player, event.getLocation());
+        teleportAction.playerMoved(game, player, event.getLocation());
     }
 }

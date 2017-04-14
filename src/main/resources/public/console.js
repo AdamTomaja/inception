@@ -91,5 +91,9 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
         $scope.command = "";
     }
 
+    $scope.fullscreen = function() {
+       renderService.enterFullScreen();
+    }
+
     console.log("Controller initialized");
 });

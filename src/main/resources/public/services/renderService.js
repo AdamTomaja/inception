@@ -179,6 +179,12 @@ myApp.service("renderService", function () {
         return scene;
     }
 
+    this.enterFullScreen = function() {
+        if (canvas.webkitRequestFullScreen) {
+            canvas.webkitRequestFullScreen();
+        }
+    }
+
     engine.runRenderLoop(function () {
         scene.render();
     });

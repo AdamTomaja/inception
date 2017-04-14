@@ -61,7 +61,7 @@ myApp.service("guiService", function (renderService) {
     scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
         var key = evt.sourceEvent.key;
         switch(key) {
-            case "Escape":
+            case "`":
                 canvas.levelVisible = !canvas.levelVisible;
                 consoleEnabled = canvas.levelVisible;
                 inputBuffer = "";

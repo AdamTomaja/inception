@@ -23,7 +23,7 @@ public class HeritageAction implements PlayerAction {
     public void execute(Player player, Game game, Command command) {
         Heritage heritage = new Heritage(command.getParameters().get(0), join(" ", command.getParameters()), player.getLocation());
         treeTraverser.findParent(player, game).get().getChildren().add(heritage);
-        game.sendToNeighbors(heritage, new NodeCreatedEvent(heritage.getPresentation()));
+        game.sendToNeighbors(heritage, new NodeCreatedEvent(heritage));
 
         player.fireEvent(new ConsoleEvent("Created heritage at " + heritage.getLocation()));
     }

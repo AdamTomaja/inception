@@ -139,12 +139,13 @@ myApp.service("renderService", function () {
     }
 
     this.renderScene = function (sceneData) {
-        models = {};
         console.log("Rendering", scene);
 
         for (var nodeid in models) {
             models[nodeid].dispose();
         }
+
+        models = {};
 
         sceneData.children.forEach(function (entry) {
             console.log(entry);

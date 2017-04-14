@@ -33,7 +33,7 @@ public class WorldAction implements PlayerAction {
         World world = new World(player.getLocation(), worldName);
         Node playerParent = treeTraverser.findParent(player, game).get();
         playerParent.getChildren().add(world);
-        game.sendToNeighbors(world, new NodeCreatedEvent(world.getPresentation()));
+        game.sendToNeighbors(world, new NodeCreatedEvent(world));
         return world;
     }
 }

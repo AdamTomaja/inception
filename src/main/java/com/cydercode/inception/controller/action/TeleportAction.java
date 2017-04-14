@@ -2,6 +2,7 @@ package com.cydercode.inception.controller.action;
 
 import com.cydercode.inception.controller.Command;
 import com.cydercode.inception.events.server.ConsoleEvent;
+import com.cydercode.inception.events.server.NodeCreatedEvent;
 import com.cydercode.inception.events.server.NodePositionChangedEvent;
 import com.cydercode.inception.events.server.NodeRemovedEvent;
 import com.cydercode.inception.game.Game;
@@ -73,5 +74,6 @@ public class TeleportAction implements PlayerAction {
         oldParent.getChildren().remove(player);
         world.getChildren().add(player);
         player.fireEvent(game.createRenderFor(player));
+        game.sendToNeighbors(player, new NodeCreatedEvent(player));
     }
 }

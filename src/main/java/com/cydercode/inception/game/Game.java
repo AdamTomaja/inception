@@ -20,6 +20,7 @@ public class Game extends Node {
         Player player = new Player(Location.random(), name);
         getChildren().add(player);
         sendToNeighbors(player, new NodeCreatedEvent(player.getPresentation()));
+        sendToNeighbors(player, new ConsoleEvent(player.getName() + " joined to Your world!"));
         return player;
     }
 

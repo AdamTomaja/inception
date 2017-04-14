@@ -67,7 +67,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
         EventingWebSocketSession eventingWebSocketSession = new EventingWebSocketSession(session);
         try {
             Event event = parseEvent(message.getPayload());
-            LOGGER.info("Event received: {}", event);
+            LOGGER.debug("Event received: {}", event);
             Optional<EventHandler> handler = getEventHandler(event);
             if (!handler.isPresent()) {
                 throw new RuntimeException("Cannot find handler for event: " + event.getClass());

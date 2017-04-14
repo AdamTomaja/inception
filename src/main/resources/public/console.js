@@ -8,7 +8,7 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
 
     renderService.pickListener = function(node) {
         console.log("Node picked:", node);
-        addConsoleReceivedItem("================");
+        addConsoleReceivedItem("======== " + node.id + " ========");
         addConsoleReceivedItem("Item type: " + node.type);
         addConsoleReceivedItem("Item name: " + node.name);
         addConsoleReceivedItem("Item content: " + node.content);

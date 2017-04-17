@@ -1,5 +1,6 @@
 package com.cydercode.inception.model;
 
+import com.cydercode.inception.database.NodeEntity;
 import com.cydercode.inception.events.server.ConsoleEvent;
 import com.google.common.base.MoreObjects;
 
@@ -38,6 +39,19 @@ public class Player extends Matter implements Named {
         Map<String, Object> presentation = super.getPresentation();
         presentation.put("name", nickname);
         return presentation;
+    }
+
+    @Override
+    public NodeEntity toNodeEntity() {
+        NodeEntity nodeEntity = super.toNodeEntity();
+        nodeEntity.setName(nickname);
+        return nodeEntity;
+    }
+
+    @Override
+    protected void restore(NodeEntity nodeEntity) {
+        super.restore(nodeEntity);
+        nickname = nodeEntity.getName();
     }
 
     @Override

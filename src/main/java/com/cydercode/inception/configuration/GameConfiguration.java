@@ -1,10 +1,13 @@
 package com.cydercode.inception.configuration;
 
 import com.cydercode.inception.controller.action.WorldAction;
+import com.cydercode.inception.database.NodeRepository;
 import com.cydercode.inception.game.Game;
 import com.cydercode.inception.model.Location;
+import com.cydercode.inception.model.Node;
 import com.cydercode.inception.model.Player;
 import com.cydercode.inception.model.World;
+import com.sleepycat.je.DatabaseException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +21,15 @@ public class GameConfiguration {
     @Autowired
     private WorldAction worldAction;
 
+    @Autowired
+    private NodeRepository nodeRepository;
+
     @Bean
-    public Game game() {
+    public Game game() throws Exception {
+        Node node = new Node();
+        nodeRepository.add(node);
+        System.out.println(nodeRepository.getAll());
+
         Game game = new Game();
         Player adam = game.createNewPlayer("Adam");
         IntStream.range(0, 100).forEach(i -> {

@@ -1,15 +1,15 @@
 package com.cydercode.inception.model;
 
+import com.cydercode.inception.database.NodeEntity;
 import com.cydercode.inception.events.Event;
 import com.cydercode.inception.events.EventListener;
 import com.google.common.base.MoreObjects;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class Node {
+public class Node implements Unique {
+
+    protected String id = UUID.randomUUID().toString();
 
     private List<Node> children = new ArrayList<>();
 
@@ -32,7 +32,31 @@ public class Node {
     public Map<String, Object> getPresentation() {
         HashMap<String, Object> presentation = new HashMap<>();
         presentation.put("type", this.getClass().getSimpleName());
+        presentation.put("id", id);
         return presentation;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public NodeEntity toNodeEntity() {
+        NodeEntity nodeEntity = new NodeEntity();
+        nodeEntity.setId(id);
+        nodeEntity.setType(this.getClass().getName());
+        return nodeEntity;
+    }
+
+    public static Node fromNodeEntity(NodeEntity nodeEntity) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class<Node> clazz = (Class<Node>) Class.forName(nodeEntity.getType());
+        Node instance = clazz.newInstance();
+        instance.restore(nodeEntity);
+        return instance;
+    }
+
+    protected void restore(NodeEntity nodeEntity) {
+        id = nodeEntity.getId();
     }
 
     @Override

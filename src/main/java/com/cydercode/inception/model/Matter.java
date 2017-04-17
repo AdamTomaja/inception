@@ -1,12 +1,15 @@
 package com.cydercode.inception.model;
 
-import java.util.Map;
-import java.util.UUID;
+import com.cydercode.inception.database.NodeEntity;
+import com.sleepycat.persist.model.Entity;
 
-public class Matter extends Node implements Unique {
+import java.util.Map;
+
+@Entity
+public class Matter extends Node {
 
     private Color color = Color.random();
-    private String id = UUID.randomUUID().toString();
+
     private Location location;
 
     public Matter(Location location) {
@@ -22,14 +25,23 @@ public class Matter extends Node implements Unique {
     }
 
     @Override
-    public String getId() {
-        return id;
+    protected void restore(NodeEntity nodeEntity) {
+        super.restore(nodeEntity);
+        color = nodeEntity.getColor();
+        location = nodeEntity.getLocation();
+    }
+
+    @Override
+    public NodeEntity toNodeEntity() {
+        NodeEntity nodeEntity = super.toNodeEntity();
+        nodeEntity.setColor(color);
+        nodeEntity.setLocation(location);
+        return nodeEntity;
     }
 
     @Override
     public Map<String, Object> getPresentation() {
         Map<String, Object> presentation = super.getPresentation();
-        presentation.put("id", id);
         presentation.put("color", color);
         presentation.put("location", location);
         return presentation;

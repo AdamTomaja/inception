@@ -1,13 +1,14 @@
 package com.cydercode.inception.model;
 
+import com.cydercode.inception.database.NodeEntity;
 import com.google.common.base.MoreObjects;
 
 import java.util.Map;
 
 public class Heritage extends Matter {
 
-    private final String content;
-    private final String name;
+    private String content;
+    private String name;
 
     public Heritage(String name, String content, Location location) {
         super(location);
@@ -21,6 +22,21 @@ public class Heritage extends Matter {
         presentation.put("content", content);
         presentation.put("name", name);
         return presentation;
+    }
+
+    @Override
+    public NodeEntity toNodeEntity() {
+        NodeEntity nodeEntity = super.toNodeEntity();
+        nodeEntity.setContent(content);
+        nodeEntity.setName(name);
+        return nodeEntity;
+    }
+
+    @Override
+    protected void restore(NodeEntity nodeEntity) {
+        super.restore(nodeEntity);
+        content = nodeEntity.getContent();
+        name = nodeEntity.getName();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.cydercode.inception.model;
 
+import com.cydercode.inception.database.NodeEntity;
 import com.google.common.base.MoreObjects;
 
 import java.util.Map;
@@ -27,6 +28,19 @@ public class World extends Matter implements Named {
         return MoreObjects.toStringHelper(this)
                 .add("name", name)
                 .toString();
+    }
+
+    @Override
+    public NodeEntity toNodeEntity() {
+        NodeEntity nodeEntity = super.toNodeEntity();
+        nodeEntity.setName(name);
+        return nodeEntity;
+    }
+
+    @Override
+    protected void restore(NodeEntity nodeEntity) {
+        super.restore(nodeEntity);
+        name = nodeEntity.getName();
     }
 
     @Override

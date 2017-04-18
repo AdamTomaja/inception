@@ -61,6 +61,7 @@ public class Game extends Node {
 
     public void removePlayer(Player player) {
         sendToNeighbors(player, new NodeRemovedEvent(player));
+        sendToNeighbors(player, new ConsoleEvent(player.getName() +  " has left the game"));
         treeTraverser.findParent(player, this).get().getChildren().remove(player);
     }
 

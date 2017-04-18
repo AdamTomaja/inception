@@ -25,6 +25,8 @@
         <commons-lang3.version>3.5</commons-lang3.version>
         <berkeleydb.version>3.2.76</berkeleydb.version>
         <javax.websocket-api.version>1.1</javax.websocket-api.version>
+        <awaitility.version>1.7.0</awaitility.version>
+        <json-unit.version>1.21.0</json-unit.version>
     </properties>
 
     <dependencies>
@@ -73,6 +75,21 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.javacrumbs.json-unit</groupId>
+            <artifactId>json-unit</artifactId>
+            <version>${json-unit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.jayway.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
 

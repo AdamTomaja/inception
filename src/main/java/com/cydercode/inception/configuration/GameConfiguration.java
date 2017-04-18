@@ -3,17 +3,14 @@ package com.cydercode.inception.configuration;
 import com.cydercode.inception.controller.action.WorldAction;
 import com.cydercode.inception.database.NodeRepository;
 import com.cydercode.inception.game.Game;
-import com.cydercode.inception.model.Location;
 import com.cydercode.inception.model.Node;
-import com.cydercode.inception.model.Player;
-import com.cydercode.inception.model.World;
-import com.sleepycat.je.DatabaseException;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Configuration
 public class GameConfiguration {
@@ -28,16 +25,28 @@ public class GameConfiguration {
     public Game game() throws Exception {
         Node node = new Node();
         nodeRepository.add(node);
-        System.out.println(nodeRepository.getAll());
+        List<Node> nodes = nodeRepository.getAll();
+        Optional<Node> game = recreateGame(nodes);
+        if (game.isPresent()) {
+            return (Game) game.get();
+        }
 
-        Game game = new Game();
-        Player adam = game.createNewPlayer("Adam");
-        IntStream.range(0, 100).forEach(i -> {
-            World world = worldAction.createWorld(adam, game, "adamsworld");
-            world.setLocation(Location.random());
-            world.setName("Wrd_" + RandomStringUtils.randomAlphabetic(4));
+        return new Game();
+    }
+
+    private Optional<Node> recreateGame(List<Node> nodes) {
+        nodes.forEach(node -> {
+            node.setChildren(node.getChildren().stream().map(n -> findNode(n.getId(), nodes)).collect(Collectors.toList()));
         });
 
-        return game;
+        return findGame(nodes);
+    }
+
+    private Optional<Node> findGame(List<Node> nodes) {
+        return nodes.stream().filter(n -> n instanceof Game).findFirst();
+    }
+
+    private Node findNode(String id, List<Node> nodes) {
+        return nodes.stream().filter(n -> id.equals(n.getId())).findFirst().get();
     }
 }

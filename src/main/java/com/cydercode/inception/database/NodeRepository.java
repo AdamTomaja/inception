@@ -23,9 +23,12 @@ public class NodeRepository {
 
     public NodeEntity add(Node node) throws DatabaseException {
         NodeEntity nodeEntity = entityStore.getPrimaryIndex(String.class, NodeEntity.class).put(node.toNodeEntity());
+        return nodeEntity;
+    }
+
+    public void sync() throws DatabaseException {
         entityStore.sync();
         environment.sync();
-        return nodeEntity;
     }
 
     public List<Node> getAll() throws DatabaseException, IllegalAccessException, InstantiationException, ClassNotFoundException {

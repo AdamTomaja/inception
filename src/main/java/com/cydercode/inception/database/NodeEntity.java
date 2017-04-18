@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
 
+import java.util.List;
+
 @Entity
 public class NodeEntity {
 
@@ -16,6 +18,7 @@ public class NodeEntity {
     private String location;
     private String color;
     private String content;
+    private List<String> children;
 
     public String getId() {
         return id;
@@ -63,5 +66,13 @@ public class NodeEntity {
 
     public String getContent() {
         return content;
+    }
+
+    public List<String> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<String> children) {
+        this.children = children;
     }
 }

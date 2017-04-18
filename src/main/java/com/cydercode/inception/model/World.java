@@ -9,6 +9,9 @@ public class World extends Matter implements Named {
 
     private String name;
 
+    public World() {
+    }
+
     public World(Location location, String name) {
         super(location);
         this.name = name;

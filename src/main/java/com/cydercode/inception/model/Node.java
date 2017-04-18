@@ -6,12 +6,14 @@ import com.cydercode.inception.events.EventListener;
 import com.google.common.base.MoreObjects;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Node implements Unique {
 
     protected String id = UUID.randomUUID().toString();
 
     private List<Node> children = new ArrayList<>();
+    private List<EventListener> listeners = new ArrayList<>();
 
     public List<Node> getChildren() {
         return children;
@@ -22,11 +24,7 @@ public class Node implements Unique {
     }
 
     public void fireEvent(Event event) {
-        for (Node child : children) {
-            if (child instanceof EventListener) {
-                ((EventListener) child).onEvent(event);
-            }
-        }
+        listeners.forEach(l -> l.onEvent(event));
     }
 
     public Map<String, Object> getPresentation() {
@@ -41,10 +39,17 @@ public class Node implements Unique {
         return id;
     }
 
+    public Node withId(String id) {
+        this.id = id;
+        return this;
+    }
+
     public NodeEntity toNodeEntity() {
         NodeEntity nodeEntity = new NodeEntity();
         nodeEntity.setId(id);
         nodeEntity.setType(this.getClass().getName());
+        nodeEntity.setChildren(children.stream()
+                .map(c -> c.getId()).collect(Collectors.toList()));
         return nodeEntity;
     }
 
@@ -57,6 +62,7 @@ public class Node implements Unique {
 
     protected void restore(NodeEntity nodeEntity) {
         id = nodeEntity.getId();
+        children = nodeEntity.getChildren().stream().map(id -> new Node().withId(id)).collect(Collectors.toList());
     }
 
     @Override
@@ -64,5 +70,9 @@ public class Node implements Unique {
         return MoreObjects.toStringHelper(this)
                 .add("presentation", getPresentation())
                 .toString();
+    }
+
+    public void addListener(EventListener eventListener) {
+        listeners.add(eventListener);
     }
 }

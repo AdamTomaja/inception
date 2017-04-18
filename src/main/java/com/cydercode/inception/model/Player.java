@@ -12,6 +12,9 @@ public class Player extends Matter implements Named {
 
     private String nickname;
 
+    public Player() {
+    }
+
     public Player(Location location, String nickname) {
         super(location);
         this.nickname = nickname;

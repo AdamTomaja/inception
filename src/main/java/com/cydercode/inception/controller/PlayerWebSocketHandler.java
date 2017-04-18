@@ -51,7 +51,7 @@ public class PlayerWebSocketHandler extends TextWebSocketHandler {
         Player player = game.createNewPlayer(namesProvider.getRandomName());
         sessionsCache.addPlayer(session, player);
 
-        player.getChildren().add(new EventListener() {
+        player.addListener(new EventListener() {
             @Override
             public void onEvent(Event event) {
                 try {

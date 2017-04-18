@@ -12,6 +12,9 @@ public class Matter extends Node {
 
     private Location location;
 
+    public Matter() {
+    }
+
     public Matter(Location location) {
         this.location = location;
     }

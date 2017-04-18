@@ -10,7 +10,6 @@ public class NodeCreatedEvent extends Event {
     private Map<String, Object> node;
 
     public NodeCreatedEvent(Node node) {
-        super("nodeCreatedEvent");
         this.node = node.getPresentation();
     }
 

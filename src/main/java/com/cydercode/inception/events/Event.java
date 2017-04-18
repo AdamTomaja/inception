@@ -5,11 +5,7 @@ public class Event {
     protected String type;
 
     public Event() {
-        //
-    }
-
-    public Event(String type) {
-        this.type = type;
+        type = this.getClass().getSimpleName();
     }
 
     public String getType() {

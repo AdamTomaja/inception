@@ -10,7 +10,6 @@ public class NodePositionChangedEvent extends Event {
     private Location location;
 
     public NodePositionChangedEvent(Player player, Location location) {
-        super("nodePositionChangedEvent");
         this.node = player.getId();
         this.location = location;
     }

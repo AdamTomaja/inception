@@ -9,7 +9,6 @@ public class NodeRemovedEvent extends Event {
     private String node;
 
     public NodeRemovedEvent(Unique node) {
-        super("nodeRemovedEvent");
         this.node = node.getId();
     }
 

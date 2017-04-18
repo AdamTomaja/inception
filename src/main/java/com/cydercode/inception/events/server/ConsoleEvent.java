@@ -7,7 +7,6 @@ public class ConsoleEvent extends Event {
     private String content;
 
     public ConsoleEvent(String content) {
-        super("consoleEvent");
         this.content = content;
     }
 

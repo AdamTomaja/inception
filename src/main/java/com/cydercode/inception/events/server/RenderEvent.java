@@ -7,7 +7,6 @@ public class RenderEvent extends Event {
     private Scene scene;
 
     public RenderEvent(Scene scene) {
-        super("renderEvent");
         this.scene = scene;
     }
 

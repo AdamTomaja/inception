@@ -45,31 +45,33 @@ myApp.controller('consoleController', function ($scope, renderService, websocket
         console.log(data);
         var serverEvent = JSON.parse(data);
         switch (serverEvent.type) {
-            case "consoleEvent":
+            case "ConsoleEvent":
                 addConsoleReceivedItem(serverEvent.content);
                 break;
-            case "renderEvent":
+            case "RenderEvent":
                 renderService.renderScene(serverEvent.scene);
                 break;
-            case "joinEvent":
+            case "JoinEvent":
                 console.log("Joined to game!");
                 intervalId = setInterval(cameraPositionListener, 100);
                 renderService.setPlayerPosition(serverEvent.player.location);
                 playerNodeId = serverEvent.player.id;
                 break;
-            case "nodePositionChangedEvent":
+            case "NodePositionChangedEvent":
                 if(serverEvent.node == playerNodeId) {
                     renderService.setPlayerPosition(serverEvent.location);
                 } else {
                     renderService.updateNodePosition(serverEvent.node, serverEvent.location);
                 }
                 break;
-            case "nodeCreatedEvent":
+            case "NodeCreatedEvent":
                 renderService.addNode(serverEvent.node);
                 break;
-            case "nodeRemovedEvent":
+            case "NodeRemovedEvent":
                 renderService.removeNode(serverEvent.node);
                 break;
+            default:
+                console.error("Unkown event type: ", serverEvent.type);
         }
         $scope.$apply();
     });

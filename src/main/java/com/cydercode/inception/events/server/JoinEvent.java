@@ -10,7 +10,6 @@ public class JoinEvent extends Event {
     private Map<String, Object> player;
 
     public JoinEvent(Map<String, Object> player) {
-        super("joinEvent");
         this.player = player;
     }
 
